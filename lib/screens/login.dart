@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     onPressed: () {},
                     child: Text(
-                      'تسجيل الدخول',
+                      'تسجيل ',
                       style: GoogleFonts.almarai(
                         fontSize: UIHelpers.getResponsiveFontSize(
                           context,
