@@ -1,5 +1,6 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/widgets/basics/drawar.dart';
+import 'package:ammerha_volunteer/widgets/basics/navBar.dart';
 import 'package:flutter/material.dart';
 
 class EventsScreen extends StatelessWidget {
@@ -22,6 +23,11 @@ class EventsScreen extends StatelessWidget {
         ],
       ),
       drawer: Drawar(userName: name, userImage: image),
+      body: SafeArea(child: Text('data')),
+      bottomNavigationBar: CustomBottomNavBar(
+        currentIndex: 0,
+        onTap: (index) {},
+      ),
     );
   }
 }
