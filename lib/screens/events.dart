@@ -24,10 +24,7 @@ class EventsScreen extends StatelessWidget {
       ),
       drawer: Drawar(userName: name, userImage: image),
       body: SafeArea(child: Text('data')),
-      bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: 0,
-        onTap: (index) {},
-      ),
+      bottomNavigationBar: CustomBottomBar(currentIndex: 0, onTap: (index) {}),
     );
   }
 }

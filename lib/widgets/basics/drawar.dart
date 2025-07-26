@@ -9,6 +9,7 @@ class Drawar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: 250,
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -48,10 +49,25 @@ class Drawar extends StatelessWidget {
 
             ListTile(
               leading: Icon(Icons.settings, color: Colors.white),
+              title: Text('الإعدادات', style: TextStyle(color: Colors.white)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.light_mode, color: Colors.white),
+              title: Text('المظهر', style: TextStyle(color: Colors.white)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.style, color: Colors.white),
               title: Text(
                 'طلب شهادة التطوع',
                 style: TextStyle(color: Colors.white),
               ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.delete, color: Colors.white),
+              title: Text('حذف حسابي', style: TextStyle(color: Colors.white)),
               onTap: () {},
             ),
             ListTile(
