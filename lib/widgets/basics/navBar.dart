@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final int currentIndex;
@@ -12,49 +13,82 @@ class CustomBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // عدد العناصر
+    const itemCount = 4;
+
     return Stack(
+      clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
       children: [
-        // خلفية الـ BottomBar
+        // خلفية البار
         Container(
-          height: 70,
+          height: 75,
           decoration: const BoxDecoration(
-            color: Color(0xFF00205B), // الأزرق الداكن
+            color: AppColors.primary,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
               topRight: Radius.circular(25),
             ),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildNavItem(icon: Icons.person, label: 'الشخصية', index: 4),
-              _buildNavItem(icon: Icons.article, label: 'الأخبار', index: 3),
-              const SizedBox(width: 50), // فراغ للزر العائم
-              _buildNavItem(
-                icon: Icons.military_tech,
-                label: 'لوحة الشرف',
-                index: 2,
-              ),
-              _buildNavItem(icon: Icons.work, label: 'الفرص', index: 1),
-            ],
+            children: List.generate(itemCount, (index) {
+              // لا ترسم الزر داخل Row إذا كان هو المحدد
+              if (index == currentIndex) {
+                return const SizedBox(width: 60); // احجز مكانه فقط
+              }
+              return _buildNavItem(index: index);
+            }),
           ),
         ),
-        // زر الرئيسية البارز
-        Positioned(
-          bottom: 30,
-          child: GestureDetector(
-            onTap: () => onTap(0),
-            child: Container(
-              width: 65,
-              height: 65,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: Color(0xFF00205B), width: 4),
+
+        // الزر العائم للمحدد فقط
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutQuad,
+          bottom: 20,
+          left: _getPosition(context, currentIndex, itemCount),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return ScaleTransition(scale: animation, child: child);
+            },
+            child: GestureDetector(
+              key: ValueKey<int>(currentIndex), // لضمان تبديل الأزرار
+              onTap: () => onTap(currentIndex),
+              child: Column(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: Icon(
+                          _getIcon(currentIndex),
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    _getLabel(currentIndex),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ],
               ),
-              child: Icon(Icons.home, size: 30, color: Color(0xFF00205B)),
             ),
           ),
         ),
@@ -62,24 +96,57 @@ class CustomBottomBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem({
-    required IconData icon,
-    required String label,
-    required int index,
-  }) {
-    final isSelected = currentIndex == index;
+  // مكان الزر حسب الفهرس والعرض
+  double _getPosition(BuildContext context, int index, int itemCount) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final spacing = (screenWidth - 20) / itemCount;
+    return 10 + spacing * index + (spacing / 2) - 30;
+  }
+
+  Widget _buildNavItem({required int index}) {
     return GestureDetector(
       onTap: () => onTap(index),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: Colors.white),
+          Icon(_getIcon(index), color: Colors.white),
+          const SizedBox(height: 4),
           Text(
-            label,
+            _getLabel(index),
             style: const TextStyle(color: Colors.white, fontSize: 12),
           ),
         ],
       ),
     );
+  }
+
+  IconData _getIcon(int index) {
+    switch (index) {
+      case 0:
+        return Icons.work;
+      case 1:
+        return Icons.military_tech;
+      case 2:
+        return Icons.article;
+      case 3:
+        return Icons.person;
+      default:
+        return Icons.circle;
+    }
+  }
+
+  String _getLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'الفرص';
+      case 1:
+        return 'لوحة الشرف';
+      case 2:
+        return 'الأخبار';
+      case 3:
+        return 'الشخصية';
+      default:
+        return '';
+    }
   }
 }
