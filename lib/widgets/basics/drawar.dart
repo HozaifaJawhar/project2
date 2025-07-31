@@ -1,10 +1,10 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-class Drawar extends StatelessWidget {
+class Drawar1 extends StatelessWidget {
   final String userName;
   final String? userImage;
-  const Drawar({super.key, required this.userName, this.userImage});
+  const Drawar1({super.key, required this.userName, this.userImage});
 
   @override
   Widget build(BuildContext context) {

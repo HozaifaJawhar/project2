@@ -1,6 +1,10 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/volunteer.dart';
 import 'package:ammerha_volunteer/core/models/volunteer_profile.dart';
+import 'package:ammerha_volunteer/screens/events.dart';
+import 'package:ammerha_volunteer/screens/honor_board.dart';
+import 'package:ammerha_volunteer/screens/news.dart';
+import 'package:ammerha_volunteer/widgets/basics/navBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,85 +61,72 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primary,
-          centerTitle: true,
-          title: Text(
-            'ملفك',
-            style: GoogleFonts.almarai(
-              fontWeight: FontWeight.bold,
-              color: AppColors.white,
-            ),
-          ),
-        ),
-        body: DefaultTabController(
-          length: 3,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      _buildProfileHeader(),
-                      _buildStatsSection(),
-                      _buildRankSection(),
-                      const SizedBox(height: 20),
+      child: DefaultTabController(
+        length: 3,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    _buildProfileHeader(),
+                    _buildStatsSection(),
+                    _buildRankSection(),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+              SliverPersistentHeader(
+                delegate: _SliverAppBarDelegate(
+                  TabBar(
+                    controller: _tabController,
+                    labelColor: AppColors.primary,
+                    unselectedLabelColor: AppColors.greyText,
+                    indicatorColor: AppColors.primary,
+                    indicatorWeight: 3,
+                    tabs: [
+                      Tab(
+                        child: Text(
+                          'الملف الشخصي',
+                          style: GoogleFonts.almarai(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          'الفرص المنجزة',
+                          style: GoogleFonts.almarai(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          'التواصل',
+                          style: GoogleFonts.almarai(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                SliverPersistentHeader(
-                  delegate: _SliverAppBarDelegate(
-                    TabBar(
-                      controller: _tabController,
-                      labelColor: AppColors.primary,
-                      unselectedLabelColor: AppColors.greyText,
-                      indicatorColor: AppColors.primary,
-                      indicatorWeight: 3,
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            'الملف الشخصي',
-                            style: GoogleFonts.almarai(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'الفرص المنجزة',
-                            style: GoogleFonts.almarai(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'التواصل',
-                            style: GoogleFonts.almarai(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  pinned: true,
-                ),
-              ];
-            },
-            body: TabBarView(
-              controller: _tabController,
-              children: [
-                SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
-                  child: _buildSkillsTab(),
-                ),
-                _buildOpportunitiesTab(),
-                _buildSocialTab(),
-              ],
-            ),
+                pinned: true,
+              ),
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: _buildSkillsTab(),
+              ),
+              _buildOpportunitiesTab(),
+              _buildSocialTab(),
+            ],
           ),
         ),
       ),
