@@ -1,6 +1,8 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/volunteer.dart';
 import 'package:ammerha_volunteer/core/models/volunteer_profile.dart';
+import 'package:ammerha_volunteer/widgets/profile/profile_header.dart';
+import 'package:ammerha_volunteer/widgets/profile/rank_section.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,7 +26,7 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
     profileImageUrl: 'assets/images/profile.png',
     opportunitiesCount: 0,
     hoursCount: 0,
-    rankTier: RankTier.bronze,
+    rankTier: RankTier.gold,
     rankName: 'متطوع مبتدئ',
     rankProgress: 0.3, // Represents 30%
     skills: ['التصوير', 'التصميم', 'التدريب', 'جمع التبرعات', 'إدارة المشاريع'],
@@ -78,9 +80,17 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      _buildProfileHeader(),
+                      ProfileHeaderWidget(
+                        name: volunteerProfile.name,
+                        id: volunteerProfile.id,
+                        imageUrl: volunteerProfile.profileImageUrl,
+                      ),
                       _buildStatsSection(),
-                      _buildRankSection(),
+                      RankSectionWidget(
+                        rankName: volunteerProfile.rankName,
+                        rankProgress: volunteerProfile.rankProgress,
+                        rankTier: volunteerProfile.rankTier,
+                      ),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -139,46 +149,6 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
           ),
         ),
       ),
-    );
-  }
-
-  // Builds the main profile header widget.
-  Widget _buildProfileHeader() {
-    final imageUrl = volunteerProfile.profileImageUrl;
-    final ImageProvider backgroundImage;
-
-    // Determines the correct ImageProvider based on the URL format.
-    if (imageUrl.startsWith('http')) {
-      backgroundImage = NetworkImage(imageUrl);
-    } else {
-      // Handles local assets, providing a fallback for empty paths.
-      backgroundImage = AssetImage(
-        imageUrl.isNotEmpty ? imageUrl : 'assets/images/default_avatar.png',
-      );
-    }
-
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundColor: Colors.grey.shade200,
-          backgroundImage: backgroundImage,
-        ),
-        const SizedBox(height: 12),
-        Text(
-          volunteerProfile.name,
-          style: GoogleFonts.almarai(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primary,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'المتطوع رقم #${volunteerProfile.id}',
-          style: GoogleFonts.almarai(fontSize: 14, color: AppColors.greyText),
-        ),
-      ],
     );
   }
 
