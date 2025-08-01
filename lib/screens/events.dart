@@ -31,79 +31,116 @@ class _EventsScreenState extends State<EventsScreen> {
       totalVolunteers: 30,
       joinedVolunteers: 15,
     ),
+    Event(
+      imageUrl: 'assets/images/event_image.jpg',
+      date: '٥ أغسطس ٢٠٢٥',
+      category: 'ثقافي',
+      title: 'مساعدة في معرض الكتاب',
+      totalVolunteers: 30,
+      joinedVolunteers: 15,
+    ),
+    Event(
+      imageUrl: 'assets/images/event_image.jpg',
+      date: '٥ أغسطس ٢٠٢٥',
+      category: 'ثقافي',
+      title: 'مساعدة في معرض الكتاب',
+      totalVolunteers: 30,
+      joinedVolunteers: 15,
+    ),
+    Event(
+      imageUrl: 'assets/images/event_image.jpg',
+      date: '٥ أغسطس ٢٠٢٥',
+      category: 'ثقافي',
+      title: 'مساعدة في معرض الكتاب',
+      totalVolunteers: 30,
+      joinedVolunteers: 15,
+    ),
   ];
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('data'));
-    // Directionality(
-    //   textDirection: TextDirection.rtl,
-    //   child: Stack(
-    //     children: [
-    //       Column(
-    //         children: [
-    //           Expanded(
-    //             child: Padding(
-    //               padding: const EdgeInsets.all(16.0),
-    //               child: TextField(
-    //                 decoration: InputDecoration(
-    //                   fillColor: AppColors.white,
-    //                   hintText: 'انا ابحث عن...',
-    //                   suffixIcon: const Icon(Icons.search),
-    //                   suffixIconColor: AppColors.grey2,
-    //                   border: OutlineInputBorder(
-    //                     borderRadius: BorderRadius.circular(12),
-    //                   ),
-    //                 ),
-    //               ),
-    //             ),
-    //           ),
-    //           SizedBox(height: 30),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Column(
+        children: [
+          // حقل البحث
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              decoration: InputDecoration(
+                fillColor: AppColors.white,
+                hintText: 'أنا أبحث عن...',
+                suffixIcon: const Icon(Icons.search),
+                suffixIconColor: AppColors.grey2,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
 
-    //           Expanded(
-    //             child: Container(
-    //               decoration: BoxDecoration(
-    //                 boxShadow: [
-    //                   BoxShadow(
-    //                     color: Colors.grey.shade300,
-    //                     spreadRadius: 2,
-    //                     blurRadius: 6,
-    //                     offset: Offset(0, -4),
-    //                   ),
-    //                 ],
-    //                 color: AppColors.white,
-    //                 borderRadius: BorderRadius.only(
-    //                   topLeft: Radius.circular(40),
-    //                   topRight: Radius.circular(40),
-    //                 ),
-    //               ),
+          // قائمة الفعاليات
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade300,
+                          spreadRadius: 2,
+                          blurRadius: 6,
+                          offset: const Offset(0, -4),
+                        ),
+                      ],
+                      color: Colors.grey.shade200,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
+                      ),
+                    ),
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: ListView.builder(
+                        itemCount: events.length,
+                        padding: const EdgeInsets.all(16),
+                        itemBuilder: (context, index) {
+                          return OpportunityCard(event: events[index]);
+                        },
+                      ),
+                    ),
+                  ),
 
-    //               width: double.infinity,
-    //               height: 100,
-    //               child: ListView.builder(
-    //                 itemCount: events.length,
-    //                 padding: const EdgeInsets.all(16),
-    //                 itemBuilder: (context, index) {
-    //                   return OpportunityCard(event: events[index]);
-    //                 },
-    //               ),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //       Padding(
-    //         padding: const EdgeInsets.only(right: 46, top: 88),
-    //         child: Container(
-    //           decoration: BoxDecoration(
-    //             boxShadow: [],
-    //             color: Colors.orange.shade300,
-    //             borderRadius: BorderRadius.circular(10),
-    //           ),
-    //           padding: const EdgeInsets.all(8),
-    //           child: const Icon(Icons.filter_alt, color: Colors.white),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
+                  // زر الفلترة العائم
+                  Positioned(
+                    bottom: 474,
+
+                    right: 46,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade300,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(8),
+                      child: const Icon(Icons.filter_alt, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
