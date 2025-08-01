@@ -77,7 +77,6 @@ class _EventsScreenState extends State<EventsScreen> {
               ),
             ),
           ),
-
           // قائمة الفعاليات
           Expanded(
             child: Padding(
