@@ -2,6 +2,7 @@ import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/screens/events.dart';
 import 'package:ammerha_volunteer/screens/honor_board.dart';
 import 'package:ammerha_volunteer/screens/login.dart';
+import 'package:ammerha_volunteer/screens/mian_navigation_screen.dart';
 import 'package:ammerha_volunteer/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: VolunteerProfileScreen(),
+      home: MainNavigationScreen(),
     );
   }
 }

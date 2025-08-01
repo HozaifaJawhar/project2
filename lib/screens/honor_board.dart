@@ -1,6 +1,5 @@
 // lib/screens/honor_board_screen.dart
 
-import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/filter_options.dart';
 import 'package:ammerha_volunteer/core/models/volunteer.dart';
 import 'package:ammerha_volunteer/widgets/honorBaord/filter_bar.dart';
@@ -8,7 +7,6 @@ import 'package:ammerha_volunteer/widgets/honorBaord/filter_screen.dart';
 import 'package:ammerha_volunteer/widgets/honorBaord/rest_volunteer.dart';
 import 'package:ammerha_volunteer/widgets/honorBaord/top_three.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HonorBoardScreen extends StatefulWidget {
   const HonorBoardScreen({super.key});
@@ -110,34 +108,19 @@ class _HonorBoardScreenState extends State<HonorBoardScreen> {
 
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: AppColors.white,
-        appBar: AppBar(
-          backgroundColor: AppColors.white,
-          elevation: 1,
-          title: Text(
-            'لوحة الشرف',
-            style: GoogleFonts.almarai(
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            FilterBarWidget(
+              currentFilters: _currentFilters,
+              onTap: _openFilterScreen,
             ),
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              FilterBarWidget(
-                currentFilters: _currentFilters,
-                onTap: _openFilterScreen,
-              ),
-              const SizedBox(height: 10),
-              if (topThree.length == 3)
-                TopThreePodiumWidget(topThree: topThree),
-              const SizedBox(height: 20),
-              RankListWidget(volunteers: otherVolunteers),
-              const SizedBox(height: 20),
-            ],
-          ),
+            const SizedBox(height: 10),
+            if (topThree.length == 3) TopThreePodiumWidget(topThree: topThree),
+            const SizedBox(height: 20),
+            RankListWidget(volunteers: otherVolunteers),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );

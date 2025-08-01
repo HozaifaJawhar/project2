@@ -1,45 +1,152 @@
 import 'package:flutter/material.dart';
+import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 
-class CustomBottomNavBar extends StatelessWidget {
+class CustomBottomBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
 
-  const CustomBottomNavBar({
-    Key? key,
+  const CustomBottomBar({
+    super.key,
     required this.currentIndex,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white70,
-      backgroundColor: Color(0xFF002366), // نفس لون الخلفية الأزرق الداكن
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'الرئيسية',
+    // عدد العناصر
+    const itemCount = 4;
+
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.bottomCenter,
+      children: [
+        // خلفية البار
+        Container(
+          height: 75,
+          decoration: const BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(itemCount, (index) {
+              // لا ترسم الزر داخل Row إذا كان هو المحدد
+              if (index == currentIndex) {
+                return const SizedBox(width: 60); // احجز مكانه فقط
+              }
+              return _buildNavItem(index: index);
+            }),
+          ),
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.work_outline), label: 'الفرص'),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.emoji_events_outlined),
-          label: 'لوحة الشرف',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.article_outlined),
-          label: 'الأخبار',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          label: 'الشخصية',
+
+        // الزر العائم للمحدد فقط
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutQuad,
+          bottom: 20,
+          left: _getPosition(context, currentIndex, itemCount),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return ScaleTransition(scale: animation, child: child);
+            },
+            child: GestureDetector(
+              key: ValueKey<int>(currentIndex), // لضمان تبديل الأزرار
+              onTap: () => onTap(currentIndex),
+              child: Column(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: Icon(
+                          _getIcon(currentIndex),
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    _getLabel(currentIndex),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
-      selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
     );
+  }
+
+  // مكان الزر حسب الفهرس والعرض
+  double _getPosition(BuildContext context, int index, int itemCount) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final spacing = (screenWidth - 20) / itemCount;
+    return 10 + spacing * index + (spacing / 2) - 30;
+  }
+
+  Widget _buildNavItem({required int index}) {
+    return GestureDetector(
+      onTap: () => onTap(index),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(_getIcon(index), color: Colors.white),
+          const SizedBox(height: 4),
+          Text(
+            _getLabel(index),
+            style: const TextStyle(color: Colors.white, fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _getIcon(int index) {
+    switch (index) {
+      case 0:
+        return Icons.work;
+      case 1:
+        return Icons.military_tech;
+      case 2:
+        return Icons.article;
+      case 3:
+        return Icons.person;
+      default:
+        return Icons.circle;
+    }
+  }
+
+  String _getLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'الفرص';
+      case 1:
+        return 'لوحة الشرف';
+      case 2:
+        return 'الأخبار';
+      case 3:
+        return 'الشخصية';
+      default:
+        return '';
+    }
   }
 }

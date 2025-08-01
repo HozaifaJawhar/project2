@@ -1,14 +1,15 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-class Drawar extends StatelessWidget {
+class Drawar1 extends StatelessWidget {
   final String userName;
   final String? userImage;
-  const Drawar({super.key, required this.userName, this.userImage});
+  const Drawar1({super.key, required this.userName, this.userImage});
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: 250,
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -48,10 +49,25 @@ class Drawar extends StatelessWidget {
 
             ListTile(
               leading: Icon(Icons.settings, color: Colors.white),
+              title: Text('الإعدادات', style: TextStyle(color: Colors.white)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.light_mode, color: Colors.white),
+              title: Text('المظهر', style: TextStyle(color: Colors.white)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.style, color: Colors.white),
               title: Text(
                 'طلب شهادة التطوع',
                 style: TextStyle(color: Colors.white),
               ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.delete, color: Colors.white),
+              title: Text('حذف حسابي', style: TextStyle(color: Colors.white)),
               onTap: () {},
             ),
             ListTile(
