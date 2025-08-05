@@ -18,46 +18,150 @@ class _EventsScreenState extends State<EventsScreen> {
     Event(
       imageUrl: 'assets/images/event_image.jpg',
       date: '١ أغسطس ٢٠٢٥',
+      time: '1:00',
       category: 'صحي',
       title: 'فعالية التبرع بالدم',
+      description:
+          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
+      place: 'مشفى المواساة',
       totalVolunteers: 50,
       joinedVolunteers: 20,
+      hours: 2,
     ),
     Event(
       imageUrl: 'assets/images/event_image.jpg',
       date: '٥ أغسطس ٢٠٢٥',
+      time: '1:00',
       category: 'ثقافي',
       title: 'مساعدة في معرض الكتاب',
+      description:
+          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
+      place: 'مشفى المواساة',
       totalVolunteers: 30,
       joinedVolunteers: 15,
+      hours: 2,
     ),
     Event(
       imageUrl: 'assets/images/event_image.jpg',
       date: '٥ أغسطس ٢٠٢٥',
+      time: '1:00',
       category: 'ثقافي',
       title: 'مساعدة في معرض الكتاب',
+      description:
+          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
+      place: 'مشفى المواساة',
       totalVolunteers: 30,
       joinedVolunteers: 15,
+      hours: 2,
     ),
     Event(
       imageUrl: 'assets/images/event_image.jpg',
       date: '٥ أغسطس ٢٠٢٥',
+      time: '1:00',
       category: 'ثقافي',
       title: 'مساعدة في معرض الكتاب',
+      description:
+          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
+      place: 'مشفى المواساة',
       totalVolunteers: 30,
       joinedVolunteers: 15,
+      hours: 2,
     ),
     Event(
       imageUrl: 'assets/images/event_image.jpg',
       date: '٥ أغسطس ٢٠٢٥',
+      time: '1:00',
       category: 'ثقافي',
       title: 'مساعدة في معرض الكتاب',
+      description:
+          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
+      place: 'مشفى المواساة',
       totalVolunteers: 30,
       joinedVolunteers: 15,
+      hours: 2,
     ),
   ];
   @override
   Widget build(BuildContext context) {
+    void _showFilterSheet(BuildContext context) {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          String? selectedYear;
+          String? selectedCategory;
+
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Wrap(
+                  children: [
+                    const Text(
+                      'اختر سنة الفعالية',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    DropdownButton<String>(
+                      value: selectedYear,
+                      isExpanded: true,
+                      hint: const Text('السنة'),
+                      items: ['2023', '2024', '2025']
+                          .map(
+                            (year) => DropdownMenuItem(
+                              value: year,
+                              child: Text(year),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() => selectedYear = value);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'اختر مجال التطوع',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    DropdownButton<String>(
+                      value: selectedCategory,
+                      isExpanded: true,
+                      hint: const Text('المجال'),
+                      items: ['صحي', 'ثقافي', 'بيئي', 'اجتماعي']
+                          .map(
+                            (field) => DropdownMenuItem(
+                              value: field,
+                              child: Text(field),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() => selectedCategory = value);
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange.shade400,
+                      ),
+                      onPressed: () {
+                        // نضع هنا الفلترة حسب selectedYear و selectedCategory
+                        Navigator.pop(context);
+                        print('فلترة على $selectedYear - $selectedCategory');
+                      },
+                      child: const Text('تطبيق الفلاتر'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      );
+    }
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Column(
@@ -116,23 +220,25 @@ class _EventsScreenState extends State<EventsScreen> {
 
                   // زر الفلترة العائم
                   Positioned(
-                    bottom: 474,
+                    top: MediaQuery.of(context).size.height * -0.03,
 
-                    right: 46,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.orange.shade300,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
+                    right: MediaQuery.of(context).size.height * 0.08,
+                    child: GestureDetector(
+                      onTap: () {
+                        _showFilterSheet(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.orange.shade300,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: const Icon(
+                          Icons.filter_alt,
+                          color: Colors.white,
+                        ),
                       ),
-                      padding: const EdgeInsets.all(8),
-                      child: const Icon(Icons.filter_alt, color: Colors.white),
                     ),
                   ),
                 ],

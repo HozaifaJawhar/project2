@@ -21,25 +21,31 @@ class CustomBottomBar extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       children: [
         // خلفية البار
-        Container(
-          height: 75,
-          decoration: const BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
+        ClipPath(
+          clipper: BottomBarClipper(
+            notchCenterX:
+                _getPosition(context, currentIndex, itemCount) +
+                30, // center of notch
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(itemCount, (index) {
-              // لا ترسم الزر داخل Row إذا كان هو المحدد
-              if (index == currentIndex) {
-                return const SizedBox(width: 60); // احجز مكانه فقط
-              }
-              return _buildNavItem(index: index);
-            }),
+          child: Container(
+            height: 75,
+            decoration: const BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(itemCount, (index) {
+                if (index == currentIndex) {
+                  return const SizedBox(width: 60);
+                }
+                return _buildNavItem(index: index);
+              }),
+            ),
           ),
         ),
 
@@ -148,5 +154,47 @@ class CustomBottomBar extends StatelessWidget {
       default:
         return '';
     }
+  }
+}
+
+class BottomBarClipper extends CustomClipper<Path> {
+  final double notchCenterX;
+
+  BottomBarClipper({required this.notchCenterX});
+
+  @override
+  Path getClip(Size size) {
+    const notchRadius = 38.0;
+    const notchDepth = 14.0;
+
+    final path = Path();
+    path.moveTo(0, 0);
+
+    final notchStart = notchCenterX - notchRadius;
+    final notchEnd = notchCenterX + notchRadius;
+
+    path.lineTo(notchStart - 10, 0);
+
+    // انحناءة ناعمة بثلاث نقاط
+    path.quadraticBezierTo(notchStart + 6, 0, notchStart + 10, notchDepth);
+    path.quadraticBezierTo(
+      notchCenterX,
+      notchDepth + 6,
+      notchEnd - 10,
+      notchDepth,
+    );
+    path.quadraticBezierTo(notchEnd - 6, 0, notchEnd + 10, 0);
+
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant BottomBarClipper oldClipper) {
+    return oldClipper.notchCenterX != notchCenterX;
   }
 }

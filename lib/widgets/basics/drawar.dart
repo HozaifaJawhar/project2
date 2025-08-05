@@ -12,11 +12,12 @@ class Drawar1 extends StatelessWidget {
       width: 250,
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.white, AppColors.primary],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          color: AppColors.primary,
+          // gradient: LinearGradient(
+          //   colors: [Colors.white, AppColors.primary],
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          // ),
         ),
         child: ListView(
           padding: EdgeInsets.all(0),
