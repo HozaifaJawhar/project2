@@ -1,5 +1,6 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/volunteer.dart';
+import 'package:ammerha_volunteer/widgets/honorBaord/rank_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,25 +20,6 @@ class RankListWidget extends StatelessWidget {
         return _buildRankListItem(volunteer);
       },
     );
-  }
-
-  Widget _getRankBadge(RankTier tier, {double size = 24}) {
-    String imagePath;
-    switch (tier) {
-      case RankTier.diamond:
-        imagePath = 'assets/icons/medal3.png';
-        break;
-      case RankTier.gold:
-        imagePath = 'assets/icons/medal3.png';
-        break;
-      case RankTier.silver:
-        imagePath = 'assets/icons/medal3.png';
-        break;
-      case RankTier.bronze:
-        imagePath = 'assets/icons/medal3.png';
-        break;
-    }
-    return Image.asset(imagePath, width: size, height: size);
   }
 
   Widget _buildRankListItem(Volunteer volunteer) {
@@ -95,7 +77,7 @@ class RankListWidget extends StatelessWidget {
             Row(
               children: [
                 // 4. أيقونة الرتبة
-                _getRankBadge(volunteer.tier),
+                getRankBadgeWidget(volunteer.tier),
                 const SizedBox(width: 8),
 
                 // 5. عدد الفرص

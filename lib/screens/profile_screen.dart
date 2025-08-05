@@ -1,10 +1,8 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/volunteer.dart';
 import 'package:ammerha_volunteer/core/models/volunteer_profile.dart';
-import 'package:ammerha_volunteer/screens/events.dart';
-import 'package:ammerha_volunteer/screens/honor_board.dart';
-import 'package:ammerha_volunteer/screens/news.dart';
-import 'package:ammerha_volunteer/widgets/basics/navBar.dart';
+import 'package:ammerha_volunteer/widgets/profile/profile_header.dart';
+import 'package:ammerha_volunteer/widgets/profile/rank_section.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,7 +26,7 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
     profileImageUrl: 'assets/images/profile.png',
     opportunitiesCount: 0,
     hoursCount: 0,
-    rankTier: RankTier.bronze,
+    rankTier: RankTier.gold,
     rankName: 'متطوع مبتدئ',
     rankProgress: 0.3, // Represents 30%
     skills: ['التصوير', 'التصميم', 'التدريب', 'جمع التبرعات', 'إدارة المشاريع'],
@@ -61,115 +59,96 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: DefaultTabController(
-        length: 3,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    _buildProfileHeader(),
-                    _buildStatsSection(),
-                    _buildRankSection(),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
-              SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(
-                  TabBar(
-                    controller: _tabController,
-                    labelColor: AppColors.primary,
-                    unselectedLabelColor: AppColors.greyText,
-                    indicatorColor: AppColors.primary,
-                    indicatorWeight: 3,
-                    tabs: [
-                      Tab(
-                        child: Text(
-                          'الملف الشخصي',
-                          style: GoogleFonts.almarai(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.primary,
+          centerTitle: true,
+          title: Text(
+            'ملفك',
+            style: GoogleFonts.almarai(
+              fontWeight: FontWeight.bold,
+              color: AppColors.white,
+            ),
+          ),
+        ),
+        body: DefaultTabController(
+          length: 3,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      ProfileHeaderWidget(
+                        name: volunteerProfile.name,
+                        id: volunteerProfile.id,
+                        imageUrl: volunteerProfile.profileImageUrl,
                       ),
-                      Tab(
-                        child: Text(
-                          'الفرص المنجزة',
-                          style: GoogleFonts.almarai(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      _buildStatsSection(),
+                      RankSectionWidget(
+                        rankName: volunteerProfile.rankName,
+                        rankProgress: volunteerProfile.rankProgress,
+                        rankTier: volunteerProfile.rankTier,
                       ),
-                      Tab(
-                        child: Text(
-                          'التواصل',
-                          style: GoogleFonts.almarai(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
-                pinned: true,
-              ),
-            ];
-          },
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-              SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: _buildSkillsTab(),
-              ),
-              _buildOpportunitiesTab(),
-              _buildSocialTab(),
-            ],
+                SliverPersistentHeader(
+                  delegate: _SliverAppBarDelegate(
+                    TabBar(
+                      controller: _tabController,
+                      labelColor: AppColors.primary,
+                      unselectedLabelColor: AppColors.greyText,
+                      indicatorColor: AppColors.primary,
+                      indicatorWeight: 3,
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            'الملف الشخصي',
+                            style: GoogleFonts.almarai(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            'الفرص المنجزة',
+                            style: GoogleFonts.almarai(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            'التواصل',
+                            style: GoogleFonts.almarai(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  pinned: true,
+                ),
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController,
+              children: [
+                SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: _buildSkillsTab(),
+                ),
+                _buildOpportunitiesTab(),
+                _buildSocialTab(),
+              ],
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  // Builds the main profile header widget.
-  Widget _buildProfileHeader() {
-    final imageUrl = volunteerProfile.profileImageUrl;
-    final ImageProvider backgroundImage;
-
-    // Determines the correct ImageProvider based on the URL format.
-    if (imageUrl.startsWith('http')) {
-      backgroundImage = NetworkImage(imageUrl);
-    } else {
-      // Handles local assets, providing a fallback for empty paths.
-      backgroundImage = AssetImage(
-        imageUrl.isNotEmpty ? imageUrl : 'assets/images/default_avatar.png',
-      );
-    }
-
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundColor: Colors.grey.shade200,
-          backgroundImage: backgroundImage,
-        ),
-        const SizedBox(height: 12),
-        Text(
-          volunteerProfile.name,
-          style: GoogleFonts.almarai(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primary,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'المتطوع رقم #${volunteerProfile.id}',
-          style: GoogleFonts.almarai(fontSize: 14, color: AppColors.greyText),
-        ),
-      ],
     );
   }
 
@@ -215,72 +194,6 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
                 style: GoogleFonts.almarai(
                   fontSize: 12,
                   color: AppColors.greyText,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Builds the rank and progress section.
-  Widget _buildRankSection() {
-    final percentage = (volunteerProfile.rankProgress * 100).toInt();
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Card(
-        elevation: 0,
-        color: Colors.grey.shade100,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Image.asset('assets/icons/medal3.png', width: 40, height: 40),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'رتبة التطوع',
-                        style: GoogleFonts.almarai(
-                          color: AppColors.greyText,
-                          fontSize: 12,
-                        ),
-                      ),
-                      Text(
-                        volunteerProfile.rankName,
-                        style: GoogleFonts.almarai(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              LinearProgressIndicator(
-                value: volunteerProfile.rankProgress,
-                backgroundColor: Colors.grey.shade300,
-                color: AppColors.primary,
-                minHeight: 6,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '$percentage%',
-                  style: GoogleFonts.almarai(
-                    color: AppColors.greyText,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
                 ),
               ),
             ],
