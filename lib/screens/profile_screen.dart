@@ -1,9 +1,11 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/volunteer.dart';
 import 'package:ammerha_volunteer/core/models/volunteer_profile.dart';
+import 'package:ammerha_volunteer/widgets/profile/hours_opportunities.dart';
 import 'package:ammerha_volunteer/widgets/profile/profile_header.dart';
 import 'package:ammerha_volunteer/widgets/profile/rank_section.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -40,6 +42,7 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
     socialLinks: {
       'facebook': 'https://facebook.com/yourprofile',
       'linkedin': 'https://linkedin.com/in/yourprofile',
+      'instagram': 'https://instagram.com/yourprofile',
     },
   );
 
@@ -85,7 +88,10 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
                         id: volunteerProfile.id,
                         imageUrl: volunteerProfile.profileImageUrl,
                       ),
-                      _buildStatsSection(),
+                      StatsSectionWidget(
+                        opportunitiesCount: volunteerProfile.opportunitiesCount,
+                        hoursCount: volunteerProfile.hoursCount,
+                      ),
                       RankSectionWidget(
                         rankName: volunteerProfile.rankName,
                         rankProgress: volunteerProfile.rankProgress,
@@ -152,57 +158,6 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
     );
   }
 
-  // Builds the statistics section.
-  Widget _buildStatsSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildStatCard(
-            'الفرص',
-            volunteerProfile.opportunitiesCount.toString(),
-          ),
-          const SizedBox(width: 12),
-          _buildStatCard('الساعات', volunteerProfile.hoursCount.toString()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatCard(String title, String value) {
-    return Expanded(
-      child: Card(
-        elevation: 0,
-        color: Colors.grey.shade100,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Column(
-            children: [
-              Text(
-                value,
-                style: GoogleFonts.almarai(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primary,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                title,
-                style: GoogleFonts.almarai(
-                  fontSize: 12,
-                  color: AppColors.greyText,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   // Builds the skills tab view using a Wrap widget for layout.
   Widget _buildSkillsTab() {
     return Wrap(
@@ -251,13 +206,18 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
       children: [
         if (volunteerProfile.socialLinks.containsKey('facebook'))
           _buildSocialIcon(
-            Icons.facebook,
+            FontAwesomeIcons.facebook,
             volunteerProfile.socialLinks['facebook']!,
           ),
         if (volunteerProfile.socialLinks.containsKey('linkedin'))
           _buildSocialIcon(
-            Icons.link,
+            FontAwesomeIcons.linkedin,
             volunteerProfile.socialLinks['linkedin']!,
+          ),
+        if (volunteerProfile.socialLinks.containsKey('instagram'))
+          _buildSocialIcon(
+            FontAwesomeIcons.instagram,
+            volunteerProfile.socialLinks['instagram']!,
           ),
       ],
     );

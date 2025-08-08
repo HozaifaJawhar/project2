@@ -1,85 +1,151 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
+import 'package:ammerha_volunteer/core/models/volunteer_profile.dart';
+import 'package:ammerha_volunteer/widgets/honorBaord/rank_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class Drawar1 extends StatelessWidget {
-  final String userName;
-  final String? userImage;
-  const Drawar1({super.key, required this.userName, this.userImage});
+class CustomDrawer extends StatelessWidget {
+  final VolunteerProfile volunteerProfile;
+
+  const CustomDrawer({super.key, required this.volunteerProfile});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Drawer(
-      width: 250,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          // gradient: LinearGradient(
-          //   colors: [Colors.white, AppColors.primary],
-          //   begin: Alignment.topCenter,
-          //   end: Alignment.bottomCenter,
-          // ),
+      width: screenWidth * 0.85,
+      backgroundColor: Colors.grey.shade100,
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDrawerHeader(context),
+              const SizedBox(height: 24),
+              _buildDrawerItem(
+                icon: Icons.settings_outlined,
+                text: 'الإعدادات',
+                onTap: () {},
+              ),
+              _buildDrawerItem(
+                icon: Icons.light_mode_outlined,
+                text: 'المظهر',
+                onTap: () {},
+              ),
+              _buildDrawerItem(
+                icon: Icons.style_outlined,
+                text: 'طلب شهادة التطوع',
+                onTap: () {},
+              ),
+              _buildDrawerItem(
+                icon: Icons.delete_outlined,
+                text: 'حذف الحساب وتسجيل الخروج',
+                onTap: () {},
+              ),
+              _buildDrawerItem(
+                icon: Icons.info_outline,
+                text: 'عن التطبيق',
+                onTap: () {},
+              ),
+              // Spacer pushes the logout item to the bottom of the column.
+              const Spacer(),
+              _buildDrawerItem(
+                icon: Icons.logout,
+                text: 'تسجيل الخروج',
+                color: Colors.red.shade700,
+                onTap: () {},
+              ),
+            ],
+          ),
         ),
-        child: ListView(
-          padding: EdgeInsets.all(0),
+      ),
+    );
+  }
 
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: AppColors.primary),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+  // Helper method to build the drawer's header section.
+  Widget _buildDrawerHeader(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 43,
+          backgroundImage: AssetImage(volunteerProfile.profileImageUrl),
+        ),
+        const SizedBox(width: 8),
+        // Expanded ensures the Column takes up the remaining available space.
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: AppColors.white,
-                    backgroundImage: AssetImage(
-                      "$userImage",
-                    ), // أو NetworkImage
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'مرحبًا، $userName',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  // Flexible allows the Text widget to shrink if needed, preventing overflow.
+                  Flexible(
+                    child: Text(
+                      volunteerProfile.name,
+                      style: GoogleFonts.almarai(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.primary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  const SizedBox(width: 8),
+                  getRankBadgeWidget(volunteerProfile.rankTier, size: 35),
                 ],
               ),
-            ),
+              const SizedBox(height: 4),
+              Text(
+                volunteerProfile.rankName,
+                style: GoogleFonts.almarai(
+                  color: AppColors.greyText,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
-            ListTile(
-              leading: Icon(Icons.settings, color: Colors.white),
-              title: Text('الإعدادات', style: TextStyle(color: Colors.white)),
-              onTap: () {},
+  // Helper method to build each item in the drawer list.
+  Widget _buildDrawerItem({
+    required IconData icon,
+    required String text,
+    required VoidCallback onTap,
+    Color? color,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 20.0,
             ),
-            ListTile(
-              leading: Icon(Icons.light_mode, color: Colors.white),
-              title: Text('المظهر', style: TextStyle(color: Colors.white)),
-              onTap: () {},
+            child: Row(
+              children: [
+                Icon(icon, color: color ?? AppColors.primary, size: 26),
+                const SizedBox(width: 16),
+                Text(
+                  text,
+                  style: GoogleFonts.almarai(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: color ?? AppColors.primary,
+                  ),
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(Icons.style, color: Colors.white),
-              title: Text(
-                'طلب شهادة التطوع',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.delete, color: Colors.white),
-              title: Text('حذف حسابي', style: TextStyle(color: Colors.white)),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.logout, color: Colors.white),
-              title: Text(
-                'تسجيل الخروج',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {},
-            ),
-          ],
+          ),
         ),
       ),
     );
