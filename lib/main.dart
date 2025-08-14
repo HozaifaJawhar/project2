@@ -1,3 +1,5 @@
+import 'package:ammerha_volunteer/config/routes/app_routes.dart';
+import 'package:ammerha_volunteer/config/routes/route_generator.dart';
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 
 import 'package:ammerha_volunteer/screens/mian_navigation_screen.dart';
@@ -17,6 +19,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: MainNavigationScreen(),
+      initialRoute: AppRoutes.loginRoute,
+      // Handles all named route generation via the RouteGenerator class.
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

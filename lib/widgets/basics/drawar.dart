@@ -1,3 +1,4 @@
+import 'package:ammerha_volunteer/config/routes/app_routes.dart';
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/volunteer_profile.dart';
 import 'package:ammerha_volunteer/widgets/honorBaord/rank_helper.dart';
@@ -54,7 +55,14 @@ class CustomDrawer extends StatelessWidget {
                 icon: Icons.logout,
                 text: 'تسجيل الخروج',
                 color: Colors.red.shade700,
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.loginRoute,
+                    // remove all previous routes from the stack.
+                    (Route<dynamic> route) => false,
+                  );
+                },
               ),
             ],
           ),

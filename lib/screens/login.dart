@@ -1,7 +1,9 @@
 import 'package:ammerha_volunteer/config/responsive/ui_helper.dart';
+import 'package:ammerha_volunteer/config/routes/app_routes.dart';
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/widgets/auth/password_field.dart';
 import 'package:ammerha_volunteer/widgets/auth/text_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,11 +19,22 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
+  late TapGestureRecognizer _tapRecognizer;
+
+  @override
+  void initState() {
+    super.initState();
+    _tapRecognizer = TapGestureRecognizer()
+      ..onTap = () {
+        Navigator.pushNamed(context, AppRoutes.registrationRoute);
+      };
+  }
 
   @override
   void dispose() {
     _passwordController.dispose();
     _emailController.dispose();
+    _tapRecognizer.dispose();
     super.dispose();
   }
 
@@ -144,7 +157,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.mainNavigationRoute,
+                      );
+                    },
                     child: Text(
                       'تسجيل الدخول',
                       style: GoogleFonts.almarai(
@@ -175,6 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
                         ),
+                        recognizer: _tapRecognizer,
                       ),
                     ],
                   ),
@@ -187,4 +206,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-//kuhukhkuh
