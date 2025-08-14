@@ -1,5 +1,3 @@
-// lib/screens/honor_board_screen.dart
-
 import 'package:ammerha_volunteer/core/models/filter_options.dart';
 import 'package:ammerha_volunteer/core/models/volunteer.dart';
 import 'package:ammerha_volunteer/widgets/honorBaord/filter_bar.dart';
@@ -75,13 +73,13 @@ class _HonorBoardScreenState extends State<HonorBoardScreen> {
     ),
   ];
 
-  // متغير لتخزين خيارات الفلترة الحالية
+  // Manages the currently applied filter options.
   FilterOptions _currentFilters = FilterOptions(
     department: 'كل الأقسام',
     timePeriod: TimePeriod.currentYear,
   );
 
-  // ميثود لفتح شاشة الفلترة وانتظار النتيجة
+  // Navigates to the filter screen and updates the state with the returned options.
   void _openFilterScreen() async {
     final result = await Navigator.push<FilterOptions>(
       context,
