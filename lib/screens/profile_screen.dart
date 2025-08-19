@@ -63,17 +63,6 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primary,
-          centerTitle: true,
-          title: Text(
-            'ملفك',
-            style: GoogleFonts.almarai(
-              fontWeight: FontWeight.bold,
-              color: AppColors.white,
-            ),
-          ),
-        ),
         body: DefaultTabController(
           length: 3,
           child: NestedScrollView(

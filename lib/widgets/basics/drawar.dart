@@ -143,12 +143,16 @@ class CustomDrawer extends StatelessWidget {
               children: [
                 Icon(icon, color: color ?? AppColors.primary, size: 26),
                 const SizedBox(width: 16),
-                Text(
-                  text,
-                  style: GoogleFonts.almarai(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: color ?? AppColors.primary,
+                Flexible(
+                  child: Text(
+                    text,
+                    style: GoogleFonts.almarai(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: color ?? AppColors.primary,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ),
               ],
