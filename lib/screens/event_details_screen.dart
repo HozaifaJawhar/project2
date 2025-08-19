@@ -1,5 +1,4 @@
 // lib/screens/event_details_screen.dart
-import 'dart:math';
 
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +129,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Text(
-                widget.event.date + '          الساعة:' + widget.event.time,
+                '${widget.event.date}          الساعة:${widget.event.time}',
                 style: TextStyle(color: AppColors.greyText, fontSize: 13),
               ),
             ),
@@ -242,6 +241,20 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               indent: 15,
               endIndent: 15,
             ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Text(
+                  'المشرف على الفعالية:${widget.event.leader}',
+                  style: GoogleFonts.almarai(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ),
+
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(

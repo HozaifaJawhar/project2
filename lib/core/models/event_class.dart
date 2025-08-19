@@ -9,6 +9,7 @@ class Event {
   final int totalVolunteers;
   final int joinedVolunteers;
   final int hours;
+  final String leader;
 
   Event({
     required this.imageUrl,
@@ -21,5 +22,6 @@ class Event {
     required this.totalVolunteers,
     required this.joinedVolunteers,
     required this.hours,
+    required this.leader,
   });
 }

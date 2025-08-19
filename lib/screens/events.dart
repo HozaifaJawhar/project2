@@ -27,6 +27,7 @@ class _EventsScreenState extends State<EventsScreen> {
       totalVolunteers: 50,
       joinedVolunteers: 20,
       hours: 2,
+      leader: 'ali',
     ),
     Event(
       imageUrl: 'assets/images/event_image.jpg',
@@ -40,6 +41,7 @@ class _EventsScreenState extends State<EventsScreen> {
       totalVolunteers: 30,
       joinedVolunteers: 15,
       hours: 2,
+      leader: 'ali',
     ),
     Event(
       imageUrl: 'assets/images/event_image.jpg',
@@ -53,6 +55,7 @@ class _EventsScreenState extends State<EventsScreen> {
       totalVolunteers: 30,
       joinedVolunteers: 15,
       hours: 2,
+      leader: 'ali',
     ),
     Event(
       imageUrl: 'assets/images/event_image.jpg',
@@ -66,6 +69,7 @@ class _EventsScreenState extends State<EventsScreen> {
       totalVolunteers: 30,
       joinedVolunteers: 15,
       hours: 2,
+      leader: 'ali',
     ),
     Event(
       imageUrl: 'assets/images/event_image.jpg',
@@ -79,6 +83,7 @@ class _EventsScreenState extends State<EventsScreen> {
       totalVolunteers: 30,
       joinedVolunteers: 15,
       hours: 2,
+      leader: 'ali',
     ),
   ];
   @override

@@ -40,8 +40,9 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
               keyboardType: TextInputType.emailAddress,
               validator: (value) {
                 if (value?.isEmpty ?? true) return 'هذا الحقل مطلوب';
-                if (!EmailValidator.validate(value!))
+                if (!EmailValidator.validate(value!)) {
                   return 'بريد إلكتروني غير صالح';
+                }
                 return null;
               },
             ),
