@@ -45,8 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    print('Email: "${_emailController.text}"');
-    print('Password: "${_passwordController.text}"');
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final success = await authProvider.login(
