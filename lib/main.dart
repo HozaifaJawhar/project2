@@ -1,13 +1,20 @@
 import 'package:ammerha_volunteer/config/routes/app_routes.dart';
 import 'package:ammerha_volunteer/config/routes/route_generator.dart';
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
+import 'package:ammerha_volunteer/core/provider/auth_provider.dart';
 
 import 'package:ammerha_volunteer/screens/mian_navigation_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => AuthProvider())],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -5,16 +5,18 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomdField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-
+  final String? Function(String?)? validator;
   const CustomdField({
     super.key,
     required this.controller,
     required this.hintText,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: validator,
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,

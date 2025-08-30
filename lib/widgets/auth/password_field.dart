@@ -7,18 +7,20 @@ class CustomPasswordField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final VoidCallback onVisibilityToggle;
-
+  final String? Function(String?)? validator;
   const CustomPasswordField({
     super.key,
     required this.controller,
     required this.hintText,
     required this.obscureText,
     required this.onVisibilityToggle,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: validator,
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(

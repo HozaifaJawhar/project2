@@ -19,7 +19,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // اختيار النص حسب الحالة
         String dialogText = isRegistered
             ? 'هل أنت متأكد أنك تريد إلغاء المشاركة؟'
             : 'هل أنت متأكد أنك تريد المشاركة؟';

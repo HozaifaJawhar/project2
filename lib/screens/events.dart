@@ -88,7 +88,7 @@ class _EventsScreenState extends State<EventsScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    void _showFilterSheet(BuildContext context) {
+    void showFilterSheet(BuildContext context) {
       showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
@@ -229,7 +229,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     right: MediaQuery.of(context).size.height * 0.08,
                     child: GestureDetector(
                       onTap: () {
-                        _showFilterSheet(context);
+                        showFilterSheet(context);
                       },
                       child: Container(
                         decoration: BoxDecoration(
