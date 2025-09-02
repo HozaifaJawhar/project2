@@ -109,9 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _emailController,
                     hintText: 'أدخل البريد الإلكتروني',
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty
-                      ////// هاممممم يجب التعديل من الباك
-                      ) {
+                      if (value == null ||
+                          value.trim().isEmpty ||
+                          !value.contains(value.trim())) {
                         return 'الرجاء إدخال بريد إلكتروني صحيح';
                       }
                       return null;
