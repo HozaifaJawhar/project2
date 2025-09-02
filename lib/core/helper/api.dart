@@ -35,7 +35,7 @@ class Api {
     @required dynamic body,
     @required String? token,
   }) async {
-    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+  
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
