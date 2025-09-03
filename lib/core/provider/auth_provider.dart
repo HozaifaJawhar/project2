@@ -24,10 +24,10 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } on Exception catch (e) {
-      if (e.toString().contains('The selected username is invalid.')) {
-        _errorMessage = "البريد الإلكتروني أو كلمة المرور خاطئة";
-      } else if (e.toString().contains('The selected email is invalid.')) {
-        _errorMessage = "البريد الإلكتروني أو كلمة المرور خاطئة";
+      if (e.toString().contains("auth.wrong_credentials")) {
+        _errorMessage = " كلمة المرور خاطئة";
+      } else if (e.toString().contains("The selected email is invalid.")) {
+        _errorMessage = "البريد الإلكتروني  خاطئ";
       } else {
         _errorMessage = "لم يتم تسجيل الدخول. الرجاء المحاولة مرة أخرى";
       }
