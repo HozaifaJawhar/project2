@@ -2,6 +2,7 @@ import 'package:ammerha_volunteer/config/routes/app_routes.dart';
 import 'package:ammerha_volunteer/screens/login.dart';
 import 'package:ammerha_volunteer/screens/mian_navigation_screen.dart';
 import 'package:ammerha_volunteer/screens/registeration_screen.dart';
+import 'package:ammerha_volunteer/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -10,6 +11,9 @@ class RouteGenerator {
     // final args = settings.arguments;
 
     switch (settings.name) {
+      case AppRoutes.splashRoute:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+
       case AppRoutes.loginRoute:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
 

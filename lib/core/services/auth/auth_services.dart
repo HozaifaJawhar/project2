@@ -1,5 +1,6 @@
 import 'package:ammerha_volunteer/config/constants/url.dart';
 import 'package:ammerha_volunteer/core/helper/api.dart';
+import 'package:ammerha_volunteer/core/models/registration_data.dart';
 
 class AuthService {
   final Api _api = Api();
@@ -23,5 +24,14 @@ class AuthService {
     } else {
       throw Exception(data['message'] ?? 'فشل تسجيل الدخول');
     }
+  }
+
+  Future<void> registerVolunteer(RegistrationData registrationData) async {
+    // افترض أن التوكن غير مطلوب لعملية التسجيل
+    await _api.post(
+      url: '${AppString.baseUrl}/register', // تأكد من المسار
+      body: registrationData.toJson(),
+      token: null,
+    );
   }
 }

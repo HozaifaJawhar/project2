@@ -1,4 +1,4 @@
-import 'package:ammerha_volunteer/core/services/auth_services.dart';
+import 'package:ammerha_volunteer/core/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 
 class AuthProvider extends ChangeNotifier {
