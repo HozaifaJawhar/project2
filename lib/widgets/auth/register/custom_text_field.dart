@@ -9,9 +9,11 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
+  final TextEditingController controller;
 
   const CustomTextField({
     Key? key,
+    required this.controller,
     required this.label,
     required this.placeholder,
     this.validator,

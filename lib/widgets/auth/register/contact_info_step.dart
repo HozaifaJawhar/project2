@@ -6,8 +6,25 @@ import 'phone_number_field.dart';
 
 class ContactInfoStep extends StatefulWidget {
   final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final TextEditingController facebookController;
+  final TextEditingController instagramController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  final TextEditingController phoneController;
+  final TextEditingController whatsappController;
 
-  const ContactInfoStep({Key? key, required this.formKey}) : super(key: key);
+  const ContactInfoStep({
+    Key? key,
+    required this.formKey,
+    required this.emailController,
+    required this.facebookController,
+    required this.instagramController,
+    required this.confirmPasswordController,
+    required this.passwordController,
+    required this.phoneController,
+    required this.whatsappController,
+  }) : super(key: key);
 
   @override
   _ContactInfoStepState createState() => _ContactInfoStepState();
@@ -35,6 +52,7 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
         child: Column(
           children: [
             CustomTextField(
+              controller: widget.emailController,
               label: 'البريد الإلكتروني',
               placeholder: 'أدخل بريدك الإلكتروني',
               keyboardType: TextInputType.emailAddress,
@@ -97,11 +115,13 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
             ),
             SizedBox(height: screenHeight * 0.02),
             CustomTextField(
+              controller: widget.facebookController,
               label: 'رابط الفيسبوك (اختياري)',
               placeholder: 'أدخل رابط حسابك الشخصي على فيسبوك',
             ),
             SizedBox(height: screenHeight * 0.02),
             CustomTextField(
+              controller: widget.instagramController,
               label: 'رابط الانستغرام (اختياري)',
               placeholder: 'أدخل رابط حسابك الشخصي على انستغرام',
             ),

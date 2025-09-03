@@ -1,12 +1,12 @@
 class RegistrationData {
-  // Step 1
+  // Step 1 Data
   String? fullName;
   String? address;
-  String? gender;
+  String? gender = 'male';
   DateTime? birthDate;
-  // TODO: Add image file path
+  String? imagePath;
 
-  // Step 2
+  // Step 2 Data
   String? email;
   String? password;
   String? phone;
@@ -14,26 +14,26 @@ class RegistrationData {
   String? facebook;
   String? instagram;
 
-  // Step 3
-  Set<String> skills = {};
+  // Step 3 & 4 Data
+  Set<int> selectedSkillIds = {};
+  int? selectedDepartmentId;
 
-  // Step 4
-  Set<int> departmentIds = {}; // سنخزن IDs الأقسام المختارة
-
-  Map<String, String> toJson() {
+  // Converts the collected data into a map suitable for the API.
+  Map<String, String> toApiJson() {
     return {
       'name': fullName ?? '',
       'address': address ?? '',
-      'gender': gender ?? '',
+      'gender': gender ?? 'male',
       'birth_date': birthDate?.toIso8601String() ?? '',
       'email': email ?? '',
       'password': password ?? '',
+      'password_confirmation': password ?? '',
       'mobile_number': phone ?? '',
       'whatsapp_number': whatsapp ?? '',
-      'facebook': facebook ?? '',
-      'instagram': instagram ?? '',
-      'skills': skills.join(','),
-      'department_ids': departmentIds.join(','),
+      'facebook_url': facebook ?? '',
+      'instagram_url': instagram ?? '',
+      'skills': selectedSkillIds.join(','),
+      'departments': selectedDepartmentId?.toString() ?? '',
     };
   }
 }

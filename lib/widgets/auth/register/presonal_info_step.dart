@@ -8,8 +8,15 @@ import 'profile_image_picker.dart';
 
 class PersonalInfoStep extends StatelessWidget {
   final GlobalKey<FormState> formKey;
+  final TextEditingController fullNameController;
+  final TextEditingController addressController;
 
-  const PersonalInfoStep({Key? key, required this.formKey}) : super(key: key);
+  const PersonalInfoStep({
+    Key? key,
+    required this.formKey,
+    required this.fullNameController,
+    required this.addressController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +37,7 @@ class PersonalInfoStep extends StatelessWidget {
             ProfileImagePicker(),
             SizedBox(height: screenHeight * 0.015),
             CustomTextField(
+              controller: fullNameController,
               label: 'الاسم الثلاثي',
               placeholder: 'أدخل اسمك الثلاثي',
               validator: (value) =>
@@ -43,6 +51,7 @@ class PersonalInfoStep extends StatelessWidget {
             // ),
             SizedBox(height: screenHeight * 0.02),
             CustomTextField(
+              controller: addressController,
               label: 'العنوان',
               placeholder: 'أدخل عنوانك الكامل',
               validator: (value) =>

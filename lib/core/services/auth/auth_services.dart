@@ -1,5 +1,6 @@
 import 'package:ammerha_volunteer/config/constants/url.dart';
 import 'package:ammerha_volunteer/core/helper/api.dart';
+import 'package:ammerha_volunteer/core/models/register_helper.dart';
 import 'package:ammerha_volunteer/core/models/registration_data.dart';
 
 class AuthService {
@@ -26,11 +27,30 @@ class AuthService {
     }
   }
 
+  Future<Map<String, dynamic>> fetchRegistrationOptions() async {
+    final responseData = await _api.get(
+      url: '${AppString.baseUrl}/register/helper',
+      token: null,
+    );
+    if (responseData['data'] != null) {
+      final List<dynamic> departmentsJson = responseData['data']['departments'];
+      final List<dynamic> skillsJson = responseData['data']['skills'];
+      return {
+        'departments': departmentsJson
+            .map((e) => Department.fromJson(e))
+            .toList(),
+        'skills': skillsJson.map((e) => Skill.fromJson(e)).toList(),
+      };
+    } else {
+      throw Exception('Failed to load registration options');
+    }
+  }
+
   Future<void> registerVolunteer(RegistrationData registrationData) async {
-    // افترض أن التوكن غير مطلوب لعملية التسجيل
+    // Note: The API helper class handles form-urlencoded content type.
     await _api.post(
-      url: '${AppString.baseUrl}/register', // تأكد من المسار
-      body: registrationData.toJson(),
+      url: '${AppString.baseUrl}/register',
+      body: registrationData.toApiJson(),
       token: null,
     );
   }
