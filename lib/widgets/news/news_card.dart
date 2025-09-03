@@ -1,16 +1,11 @@
+import 'package:ammerha_volunteer/core/models/news_item.dart';
 import 'package:flutter/material.dart';
-
-import 'news_item.dart';
 
 class NewsCard extends StatelessWidget {
   final NewsItem newsItem;
   final VoidCallback onTap;
 
-  const NewsCard({
-    super.key,
-    required this.newsItem,
-    required this.onTap,
-  });
+  const NewsCard({super.key, required this.newsItem, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +84,6 @@ class NewsCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 16),
-
                       ],
                     ),
                   ],
@@ -102,4 +96,5 @@ class NewsCard extends StatelessWidget {
     );
   }
 }
+
 //bbbb

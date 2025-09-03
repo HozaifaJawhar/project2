@@ -1,6 +1,6 @@
+import 'package:ammerha_volunteer/core/models/news_item.dart';
 import 'package:flutter/material.dart';
 import '../widgets/news/news_card.dart';
-import '../widgets/news/news_item.dart';
 import 'news_details_screen.dart';
 
 class NewsScreen extends StatefulWidget {
@@ -19,40 +19,35 @@ class _NewsScreenState extends State<NewsScreen> {
       id: '1',
       title:
           'انضموا إلينا في رحلة تطوعية إلى بلودان حيث الطبيعة تلتقي بالإلهام',
-      imageUrl:
-          'assets/images/event_image.jpg',
+      imageUrl: 'assets/images/event_image.jpg',
       date: '22 حزيران 2023',
     ),
     NewsItem(
       id: '2',
       title:
           'انضموا إلينا في رحلة تطوعية إلى بلودان حيث الطبيعة تلتقي بالإلهام',
-      imageUrl:
-      'assets/images/event_image.jpg',
+      imageUrl: 'assets/images/event_image.jpg',
       date: '22 حزيران 2023',
     ),
     NewsItem(
       id: '3',
       title:
           'انضموا إلينا في رحلة تطوعية إلى بلودان حيث الطبيعة تلتقي بالإلهام',
-      imageUrl:
-      'assets/images/event_image.jpg',
+      imageUrl: 'assets/images/event_image.jpg',
       date: '22 حزيران 2023',
     ),
     NewsItem(
       id: '4',
       title:
           'انضموا إلينا في رحلة تطوعية إلى بلودان حيث الطبيعة تلتقي بالإلهام',
-      imageUrl:
-      'assets/images/event_image.jpg',
+      imageUrl: 'assets/images/event_image.jpg',
       date: '22 حزيران 2023',
     ),
     NewsItem(
       id: '5',
       title:
           'انضموا إلينا في رحلة تطوعية إلى بلودان حيث الطبيعة تلتقي بالإلهام',
-      imageUrl:
-      'assets/images/event_image.jpg',
+      imageUrl: 'assets/images/event_image.jpg',
       date: '22 حزيران 2023',
     ),
   ];
@@ -80,9 +75,8 @@ class _NewsScreenState extends State<NewsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => NewsDetailScreen(
-                          newsItem: newsItems[index],
-                        ),
+                        builder: (context) =>
+                            NewsDetailScreen(newsItem: newsItems[index]),
                       ),
                     );
                   },
