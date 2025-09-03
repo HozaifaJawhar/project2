@@ -1,14 +1,10 @@
+import 'package:ammerha_volunteer/core/models/news_item.dart';
 import 'package:flutter/material.dart';
-
-import '../widgets/news/news_item.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   final NewsItem newsItem;
 
-  const NewsDetailScreen({
-    super.key,
-    required this.newsItem,
-  });
+  const NewsDetailScreen({super.key, required this.newsItem});
 
   @override
   Widget build(BuildContext context) {
@@ -83,15 +79,11 @@ class NewsDetailScreen extends StatelessWidget {
                     // Author and date
                     Text(
                       newsItem.date,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                     const SizedBox(height: 24),
                     // Content
                     Text(
-
                       newsItem.id == '4'
                           ? '''MANILA, Philippines — For Vice President Leni Robredo, the outcome of the May 9 elections is just the beginning of the bigger battle.
       
