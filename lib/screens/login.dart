@@ -1,13 +1,14 @@
 import 'package:ammerha_volunteer/config/responsive/ui_helper.dart';
 import 'package:ammerha_volunteer/config/routes/app_routes.dart';
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
-import 'package:ammerha_volunteer/core/provider/auth_provider.dart';
+import 'package:ammerha_volunteer/core/provider/auth/auth_provider.dart';
 import 'package:ammerha_volunteer/widgets/auth/password_field.dart';
 import 'package:ammerha_volunteer/widgets/auth/text_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:email_validator/email_validator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -113,6 +114,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           value.trim().isEmpty ||
                           !value.contains(value.trim())) {
                         return 'الرجاء إدخال بريد إلكتروني صحيح';
+                      }
+                      if (!EmailValidator.validate(value.trim())) {
+                        return 'صيغة البريد الإلكتروني غير صحيحة';
                       }
                       return null;
                     },

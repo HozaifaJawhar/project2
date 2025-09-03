@@ -8,14 +8,22 @@ import 'profile_image_picker.dart';
 
 class PersonalInfoStep extends StatelessWidget {
   final GlobalKey<FormState> formKey;
+  final TextEditingController fullNameController;
+  final TextEditingController addressController;
 
-  const PersonalInfoStep({Key? key, required this.formKey}) : super(key: key);
+  const PersonalInfoStep({
+    Key? key,
+    required this.formKey,
+    required this.fullNameController,
+    required this.addressController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
@@ -29,46 +37,46 @@ class PersonalInfoStep extends StatelessWidget {
             ProfileImagePicker(),
             SizedBox(height: screenHeight * 0.015),
             CustomTextField(
+              controller: fullNameController,
               label: 'الاسم الثلاثي',
               placeholder: 'أدخل اسمك الثلاثي',
-              validator: (value) => value?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
             ),
             SizedBox(height: screenHeight * 0.02),
-            CustomTextField(
-              label: 'الجنسية',
-              placeholder: 'أدخل جنسيتك',
-              validator: (value) => value?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
-            ),
+            // CustomTextField(
+            //   label: 'الجنسية',
+            //   placeholder: 'أدخل جنسيتك',
+            //   validator: (value) => value?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
+            // ),
             SizedBox(height: screenHeight * 0.02),
             CustomTextField(
+              controller: addressController,
               label: 'العنوان',
               placeholder: 'أدخل عنوانك الكامل',
-              validator: (value) => value?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
             ),
             SizedBox(height: screenHeight * 0.02),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: CustomDropdown(
-                    label: 'الجنس',
-                    value: 'ذكر',
-                  ),
+                  child: CustomDropdown(label: 'الجنس', value: 'ذكر'),
                 ),
                 SizedBox(width: screenWidth * 0.04),
                 Expanded(
                   child: CustomDatePicker(
                     label: 'تاريخ الميلاد',
                     placeholder: 'أدخل تاريخ ميلادك',
-                    validator: (value) => value?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? 'هذا الحقل مطلوب' : null,
                   ),
                 ),
               ],
             ),
             SizedBox(height: screenHeight * 0.02),
-            CheckboxTile(
-              text: 'الموافقة على اتفاقية العمل التطوعي',
-            ),
+            CheckboxTile(text: 'الموافقة على اتفاقية العمل التطوعي'),
           ],
         ),
       ),

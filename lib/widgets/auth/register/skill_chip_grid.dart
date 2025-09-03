@@ -1,18 +1,32 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
+import 'package:ammerha_volunteer/core/models/register_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SkillChipGrid extends StatefulWidget {
-  final List<String> skills;
+  final List<Skill> skills;
+  final Set<int> selectedIds;
+  final Function(Set<int>) onSelectionChanged;
 
-  const SkillChipGrid({Key? key, required this.skills}) : super(key: key);
+  const SkillChipGrid({
+    Key? key,
+    required this.skills,
+    required this.selectedIds,
+    required this.onSelectionChanged,
+  }) : super(key: key);
 
   @override
   _SkillChipGridState createState() => _SkillChipGridState();
 }
 
 class _SkillChipGridState extends State<SkillChipGrid> {
-  Set<String> selectedSkills = {};
+  late Set<int> _selectedIds;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIds = widget.selectedIds;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +34,21 @@ class _SkillChipGridState extends State<SkillChipGrid> {
       spacing: 8,
       runSpacing: 8,
       children: widget.skills.map((skill) {
-        final isSelected = selectedSkills.contains(skill);
+        final isSelected = _selectedIds.contains(skill.id);
         return GestureDetector(
           onTap: () {
             setState(() {
               if (isSelected) {
-                selectedSkills.remove(skill);
+                _selectedIds.remove(skill.id);
               } else {
-                selectedSkills.add(skill);
+                _selectedIds.add(skill.id);
               }
             });
+            // إعلام الويدجت الأب بالتغيير
+            widget.onSelectionChanged(_selectedIds);
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: isSelected ? AppColors.primary : AppColors.white,
               border: Border.all(
@@ -44,10 +60,10 @@ class _SkillChipGridState extends State<SkillChipGrid> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (isSelected)
-                  Icon(Icons.check, size: 16, color: Colors.white),
-                if (isSelected) SizedBox(width: 4),
+                  const Icon(Icons.check, size: 16, color: Colors.white),
+                if (isSelected) const SizedBox(width: 4),
                 Text(
-                  skill,
+                  skill.name, // عرض اسم المهارة
                   style: GoogleFonts.almarai(
                     color: isSelected ? Colors.white : AppColors.primary,
                     fontSize: 14,

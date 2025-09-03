@@ -1,9 +1,11 @@
 import 'package:ammerha_volunteer/config/routes/app_routes.dart';
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/volunteer_profile.dart';
+import 'package:ammerha_volunteer/core/provider/auth/auth_provider.dart';
 import 'package:ammerha_volunteer/widgets/honorBaord/rank_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   final VolunteerProfile volunteerProfile;
@@ -56,11 +58,12 @@ class CustomDrawer extends StatelessWidget {
                 text: 'تسجيل الخروج',
                 color: Colors.red.shade700,
                 onTap: () {
+                  Provider.of<AuthProvider>(context, listen: false).logout();
+                  // Go back to the login screen and delete everything
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     AppRoutes.loginRoute,
-                    // remove all previous routes from the stack.
-                    (Route<dynamic> route) => false,
+                    (route) => false,
                   );
                 },
               ),
