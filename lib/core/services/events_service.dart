@@ -21,24 +21,19 @@ class EventsService {
     throw Exception('Unexpected response format while fetching events');
   }
 
-  Future<Map<String, dynamic>> registerVolunteer(
-    int eventId,
-    String token,
-  ) async {
+  Future<String> registerVolunteer(int eventId, String token) async {
     final url = '${AppString.baseUrl}/user/events/$eventId/register';
 
-    final response = await _api.post(
-      url: url,
-      body: {}, // body فاضي
-      token: token,
-    );
+    final response = await _api.post(url: url, body: {}, token: token);
 
-    print('Token: $token');
-    print('Status code: ${response.statusCode}');
-    print('Body: ${response.body}');
-
-    final data = jsonDecode(response.body);
-
-    return {'statusCode': response.statusCode, 'data': data};
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data["message"] == "Success!" ? "success" : "failed";
+    } else if (response.statusCode == 422) {
+      // سجل قبل
+      return "already_registered";
+    } else {
+      return "failed";
+    }
   }
 }
