@@ -48,6 +48,7 @@ class EventsProvider extends ChangeNotifier {
   Future<void> registerToEvent(Eventt event, String token) async {
     final success = await _service.registerVolunteer(event.id, token);
     if (success) {
+      //يمكن مو مضطرين نعملا.................................
       // تعديل القيم محلياً
       if ((event.volunteersCount ?? 0) > 0) {
         event = event.copyWith(
