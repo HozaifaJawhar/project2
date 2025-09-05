@@ -2,10 +2,13 @@
 
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/models/event.dart';
+import 'package:ammerha_volunteer/core/provider/events_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:provider/provider.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   final Eventt event;
@@ -17,41 +20,70 @@ class EventDetailsScreen extends StatefulWidget {
 
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
   bool isRegistered = false;
-  void _showConfirmationDialog(BuildContext context) {
+  _showConfirmationDialog(BuildContext context) {
+    if (isRegistered) return; // إذا مسجل مسبقاً، لا تفتح الحوار
+
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        String dialogText = isRegistered
-            ? 'هل أنت متأكد أنك تريد إلغاء المشاركة؟'
-            : 'هل أنت متأكد أنك تريد المشاركة؟';
-
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('تأكيد'),
-          content: Text(dialogText),
+          content: const Text('هل أنت متأكد أنك تريد المشاركة؟'),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // إغلاق الحوار
+                Navigator.of(dialogContext).pop(); // سكّر الحوار
               },
               child: const Text('لا'),
             ),
             TextButton(
-              onPressed: () {
-                setState(() {
-                  isRegistered = !isRegistered;
-                });
+              onPressed: () async {
+                final provider = context.read<EventsProvider>();
+                Navigator.of(dialogContext).pop(); // غلق الحوار فوراً
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: AppColors.primary,
-                    content: Text(
-                      isRegistered ? 'تم التسجيل بنجاح!' : 'تم إلغاء التسجيل!',
-                    ),
-                    duration: const Duration(seconds: 2),
-                  ),
+                const storage = FlutterSecureStorage();
+                final token = await storage.read(key: 'auth_token') ?? "";
+
+                final result = await provider.registerToEvent(
+                  widget.event,
+                  token,
                 );
+                print('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
+                print(result);
+                if (!mounted) return;
 
-                Navigator.of(context).pop(); // إغلاق مربع الحوار
+                switch (result) {
+                  case "success":
+                    setState(() => isRegistered = true);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: AppColors.primary,
+                        content: Text("تم التسجيل بنجاح!"),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                    break;
+
+                  case "already_registered":
+                    setState(() => isRegistered = true);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.orange,
+                        content: Text("لقد سجلت مسبقاً في هذه الفعالية."),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                    break;
+
+                  default:
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text("فشل التسجيل، حاول مرة أخرى."),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                }
               },
               child: const Text('نعم'),
             ),
@@ -266,7 +298,20 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  if (isRegistered) {
+                    // إذا مسجل مسبقاً، فقط عرض رسالة
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.orange,
+                        content: Text("لقد سجلت مسبقاً في هذه الفعالية."),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                    return;
+                  }
+
+                  // إذا ما مسجل، نفتح مربع التأكيد
                   _showConfirmationDialog(context);
                 },
                 child: Container(
@@ -277,7 +322,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      isRegistered ? 'إلغاء التسجيل' : 'تسجيل',
+                      isRegistered ? 'تم التسجيل' : 'تسجيل',
                       style: const TextStyle(color: AppColors.white),
                     ),
                   ),

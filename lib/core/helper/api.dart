@@ -35,7 +35,6 @@ class Api {
     @required dynamic body,
     @required String? token,
   }) async {
-  
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -49,6 +48,9 @@ class Api {
       body: jsonEncode(body),
       headers: headers,
     );
+    // print(token);
+    // print(response.statusCode);
+    // print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.statusCode);
       var data = jsonDecode(response.body);
@@ -61,15 +63,14 @@ class Api {
     //   print('///$data///');
     //   return data;
     // }
-    // else if (response.statusCode == 400 ||
-    //     response.statusCode == 500 ||
-    //     response.statusCode == 401) {
-    //   print(response.statusCode);
-    //   var data = jsonDecode(response.body);
-    //   print('///$data///');
-    //   return data;
-    //}
-    else {
+    else if (response.statusCode == 400 ||
+        response.statusCode == 500 ||
+        response.statusCode == 401) {
+      // print(response.statusCode);
+      var data = jsonDecode(response.body);
+      // print('///$data///');
+      return data;
+    } else {
       var errorData = jsonDecode(response.body);
       throw Exception(errorData['message'] ?? 'Failed to execute request');
     }

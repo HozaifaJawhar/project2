@@ -40,6 +40,10 @@ class AuthProvider extends ChangeNotifier {
         _errorMessage = "البريد الإلكتروني أو كلمة المرور خاطئة";
       } else if (e.toString().contains('auth.wrong_credentials')) {
         _errorMessage = "البريد الإلكتروني أو كلمة المرور خاطئة";
+      } else if (e.toString().contains(
+        "عذرًا، حسابك غير مُفعّل بعد. يرجى التواصل مع إدارة المؤسسة للمساعدة.",
+      )) {
+        _errorMessage = "حسابك غير مفعل بعد";
       } else {
         _errorMessage = "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى";
       }

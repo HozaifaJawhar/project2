@@ -21,6 +21,7 @@ class Eventt {
   final int? volunteersCount;
   final int? acceptedCount;
   final int? pendingCount;
+  final bool isRegistered; // ✅ أضفناها للـ model
   final EventImage? coverImage;
   final EventDepartment? department;
 
@@ -36,6 +37,7 @@ class Eventt {
     this.volunteersCount,
     this.acceptedCount,
     this.pendingCount,
+    this.isRegistered = false, // ✅ قيمة افتراضية
     this.coverImage,
     this.department,
   });
@@ -55,6 +57,8 @@ class Eventt {
       volunteersCount: json['volunteers_count'],
       acceptedCount: json['accepted_count'],
       pendingCount: json['pending_count'],
+      isRegistered:
+          json['is_registered'] ?? false, // ✅ لو الـ API ما بيرجعها، بتضل false
       coverImage: (json['cover_image'] is Map)
           ? EventImage.fromJson(json['cover_image'])
           : null,
@@ -77,6 +81,7 @@ class Eventt {
       'volunteers_count': volunteersCount,
       'accepted_count': acceptedCount,
       'pending_count': pendingCount,
+      'is_registered': isRegistered, // ✅ يترجع بالـ toJson
       'cover_image': coverImage?.toJson(),
       'department': department?.toJson(),
     };
@@ -94,6 +99,7 @@ class Eventt {
     int? volunteersCount,
     int? acceptedCount,
     int? pendingCount,
+    bool? isRegistered, // ✅ أضفناها للـ copyWith
     EventImage? coverImage,
     EventDepartment? department,
   }) {
@@ -109,6 +115,7 @@ class Eventt {
       volunteersCount: volunteersCount ?? this.volunteersCount,
       acceptedCount: acceptedCount ?? this.acceptedCount,
       pendingCount: pendingCount ?? this.pendingCount,
+      isRegistered: isRegistered ?? this.isRegistered, // ✅ هي
       coverImage: coverImage ?? this.coverImage,
       department: department ?? this.department,
     );

@@ -17,7 +17,6 @@ class EventsProvider extends ChangeNotifier {
   String? get error => _error;
 
   Future<void> fetchEvents({String? token, bool force = false}) async {
-    // If you have old data and want to prevent a new request without force
     if (_events.isNotEmpty && !force) return;
 
     _isLoading = true;
@@ -45,18 +44,33 @@ class EventsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> registerToEvent(Eventt event, String token) async {
-    final success = await _service.registerVolunteer(event.id, token);
-    if (success) {
-      //يمكن مو مضطرين نعملا.................................
-      // تعديل القيم محلياً
-      if ((event.volunteersCount ?? 0) > 0) {
-        event = event.copyWith(
-          volunteersCount: (event.volunteersCount ?? 0) - 1,
+  Future<String> registerToEvent(Eventt event, String token) async {
+    try {
+      final result = await _service.registerVolunteer(event.id, token);
+
+      if (result == "success") {
+        final updated = event.copyWith(
           acceptedCount: (event.acceptedCount ?? 0) + 1,
         );
+
+        final index = _events.indexWhere((e) => e.id == event.id);
+        if (index != -1) {
+          _events[index] = updated;
+        }
+
+        notifyListeners();
+      } else if (result == "already_registered") {
+        // يمكن تحديث الزر مباشرة
+        final index = _events.indexWhere((e) => e.id == event.id);
+        if (index != -1) {
+          _events[index] = event; // أو أي تعديل خفيف لو حاب تظهر
+        }
+        notifyListeners();
       }
-      notifyListeners();
+
+      return result;
+    } catch (e) {
+      return "failed";
     }
   }
 }
