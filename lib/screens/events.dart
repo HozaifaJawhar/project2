@@ -1,7 +1,11 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
-import 'package:ammerha_volunteer/core/models/event_class.dart';
+import 'package:ammerha_volunteer/core/helper/api.dart';
+import 'package:ammerha_volunteer/core/provider/events_provider.dart';
+import 'package:ammerha_volunteer/core/services/events_service.dart';
 import 'package:ammerha_volunteer/widgets/events/event_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
@@ -11,81 +15,18 @@ class EventsScreen extends StatefulWidget {
 }
 
 class _EventsScreenState extends State<EventsScreen> {
-  final String name = "ميسان";
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  final String image = "assets/images/level1(2).jpg";
-  final List<Event> events = [
-    Event(
-      imageUrl: 'assets/images/event_image.jpg',
-      date: '١ أغسطس ٢٠٢٥',
-      time: '1:00',
-      category: 'صحي',
-      title: 'فعالية التبرع بالدم',
-      description:
-          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
-      place: 'مشفى المواساة',
-      totalVolunteers: 50,
-      joinedVolunteers: 20,
-      hours: 2,
-      leader: 'ali',
-    ),
-    Event(
-      imageUrl: 'assets/images/event_image.jpg',
-      date: '٥ أغسطس ٢٠٢٥',
-      time: '1:00',
-      category: 'ثقافي',
-      title: 'مساعدة في معرض الكتاب',
-      description:
-          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
-      place: 'مشفى المواساة',
-      totalVolunteers: 30,
-      joinedVolunteers: 15,
-      hours: 2,
-      leader: 'ali',
-    ),
-    Event(
-      imageUrl: 'assets/images/event_image.jpg',
-      date: '٥ أغسطس ٢٠٢٥',
-      time: '1:00',
-      category: 'ثقافي',
-      title: 'مساعدة في معرض الكتاب',
-      description:
-          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
-      place: 'مشفى المواساة',
-      totalVolunteers: 30,
-      joinedVolunteers: 15,
-      hours: 2,
-      leader: 'ali',
-    ),
-    Event(
-      imageUrl: 'assets/images/event_image.jpg',
-      date: '٥ أغسطس ٢٠٢٥',
-      time: '1:00',
-      category: 'ثقافي',
-      title: 'مساعدة في معرض الكتاب',
-      description:
-          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
-      place: 'مشفى المواساة',
-      totalVolunteers: 30,
-      joinedVolunteers: 15,
-      hours: 2,
-      leader: 'ali',
-    ),
-    Event(
-      imageUrl: 'assets/images/event_image.jpg',
-      date: '٥ أغسطس ٢٠٢٥',
-      time: '1:00',
-      category: 'ثقافي',
-      title: 'مساعدة في معرض الكتاب',
-      description:
-          'تهدف هذه الفعالية الى تقوية التكاتف الاجتماعي وروح المبادرة والتخفيف عن المرضى وذويهم متاعب البحث عن زمر الدم المطلوبة',
-      place: 'مشفى المواساة',
-      totalVolunteers: 30,
-      joinedVolunteers: 15,
-      hours: 2,
-      leader: 'ali',
-    ),
-  ];
+  Future<void> _ensureFetch(BuildContext context) async {
+    // CHANGE: We fetch the token and then launch the fetch from within the page after building
+    final token = await _storage.read(key: 'auth_token');
+
+    final p = context.read<EventsProvider>();
+    if (!p.isLoading && p.events.isEmpty) {
+      await p.fetchEvents(token: token, force: true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     void showFilterSheet(BuildContext context) {
@@ -167,89 +108,122 @@ class _EventsScreenState extends State<EventsScreen> {
       );
     }
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Column(
-        children: [
-          // حقل البحث
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                fillColor: AppColors.white,
-                hintText: 'أنا أبحث عن...',
-                suffixIcon: const Icon(Icons.search),
-                suffixIconColor: AppColors.grey2,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+    return ChangeNotifierProvider<EventsProvider>(
+      create: (_) => EventsProvider(EventsService(Api())),
+      child: Builder(
+        builder: (context) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _ensureFetch(context);
+          });
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Consumer<EventsProvider>(
+                builder: (context, provider, _) {
+                  if (provider.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (provider.error != null) {
+                    return Center(child: Text('خطأ: ${provider.error}'));
+                  }
+                  if (provider.events.isEmpty) {
+                    return const Center(child: Text("لا توجد فعاليات بعد"));
+                  }
+                  return Column(
+                    children: [
+                      // حقل البحث
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            fillColor: AppColors.white,
+                            hintText: 'أنا أبحث عن...',
+                            suffixIcon: const Icon(Icons.search),
+                            suffixIconColor: AppColors.grey2,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // قائمة الفعاليات
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade300,
+                                      spreadRadius: 2,
+                                      blurRadius: 6,
+                                      offset: const Offset(0, -4),
+                                    ),
+                                  ],
+                                  color: Colors.grey.shade200,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(40),
+                                    topRight: Radius.circular(40),
+                                  ),
+                                ),
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 6),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: ListView.builder(
+                                      itemCount: provider.events.length,
+                                      itemBuilder: (context, index) {
+                                        final eventt = provider.events[index];
+                                        return OpportunityCard(event: eventt);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // زر الفلترة العائم
+                              Positioned(
+                                top: MediaQuery.of(context).size.height * -0.03,
+
+                                right:
+                                    MediaQuery.of(context).size.height * 0.08,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showFilterSheet(context);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.orange.shade300,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(8),
+                                    child: const Icon(
+                                      Icons.filter_alt,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
-          ),
-          // قائمة الفعاليات
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          spreadRadius: 2,
-                          blurRadius: 6,
-                          offset: const Offset(0, -4),
-                        ),
-                      ],
-                      color: Colors.grey.shade200,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
-                      ),
-                    ),
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: ListView.builder(
-                        itemCount: events.length,
-                        padding: const EdgeInsets.all(16),
-                        itemBuilder: (context, index) {
-                          return OpportunityCard(event: events[index]);
-                        },
-                      ),
-                    ),
-                  ),
-
-                  // زر الفلترة العائم
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * -0.03,
-
-                    right: MediaQuery.of(context).size.height * 0.08,
-                    child: GestureDetector(
-                      onTap: () {
-                        showFilterSheet(context);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.orange.shade300,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.white, width: 2),
-                        ),
-                        padding: const EdgeInsets.all(8),
-                        child: const Icon(
-                          Icons.filter_alt,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

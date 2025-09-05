@@ -1,15 +1,20 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
-import 'package:ammerha_volunteer/core/models/event_class.dart';
+import 'package:ammerha_volunteer/core/models/event.dart';
 import 'package:ammerha_volunteer/screens/event_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class OpportunityCard extends StatelessWidget {
-  final Event event;
+  final Eventt event;
 
   const OpportunityCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
+    final String formattedDate = event.date != null
+        ? DateFormat('yyyy-MM-dd').format(event.date!)
+        : 'بدون تاريخ';
+    final String departmentName = event.department?.name ?? 'بدون قسم';
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -31,12 +36,7 @@ class OpportunityCard extends StatelessWidget {
               // صورة الفعالية
               ClipRRect(
                 borderRadius: BorderRadius.circular(30),
-                child: Image(
-                  image: AssetImage(event.imageUrl),
-                  width: 70,
-                  height: 70,
-                  fit: BoxFit.cover,
-                ),
+                child: _EventCoverImage(url: event.coverImage?.file),
               ),
               const SizedBox(width: 12),
               // معلومات الفعالية
@@ -45,16 +45,16 @@ class OpportunityCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      event.date,
+                      formattedDate,
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                     Text(
-                      event.category,
+                      departmentName,
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      event.title,
+                      event.name,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -64,11 +64,11 @@ class OpportunityCard extends StatelessWidget {
                     const SizedBox(height: 6),
                     Text.rich(
                       TextSpan(
-                        text: '${event.totalVolunteers} متطوع   ',
+                        text: '${event.volunteersCount} متطوع   ',
                         style: const TextStyle(color: Colors.grey),
                         children: [
                           TextSpan(
-                            text: '${event.joinedVolunteers} متطوع تم قبولهم',
+                            text: '${event.acceptedCount} متطوع تم قبولهم',
                             style: const TextStyle(color: Colors.green),
                           ),
                         ],
@@ -82,6 +82,38 @@ class OpportunityCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _EventCoverImage extends StatelessWidget {
+  final String? url;
+  const _EventCoverImage({required this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    if (url == null || url!.isEmpty) {
+      // صورة افتراضية من الأصول لو ما في URL
+      return const Image(
+        image: AssetImage('assets/images/event_image.jpg'),
+        width: 75,
+        height: 75,
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.network(
+      url!,
+      width: 75,
+      height: 75,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => const Image(
+        image: AssetImage('assets/images/event_image.jpg'),
+        width: 75,
+        height: 75,
+        fit: BoxFit.cover,
+      ),
+      // بإمكانك إضافة loadingBuilder إن حبيت
     );
   }
 }

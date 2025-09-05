@@ -1,12 +1,14 @@
 // lib/screens/event_details_screen.dart
 
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
+import 'package:ammerha_volunteer/core/models/event.dart';
 import 'package:flutter/material.dart';
-import 'package:ammerha_volunteer/core/models/event_class.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart' as intl;
 
 class EventDetailsScreen extends StatefulWidget {
-  final Event event;
+  final Eventt event;
   const EventDetailsScreen({super.key, required this.event});
 
   @override
@@ -61,6 +63,17 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final event = widget.event;
+
+    // التاريخ
+    final String formattedDate = event.date != null
+        ? intl.DateFormat('yyyy-MM-dd').format(event.date!)
+        : 'غير محدد';
+
+    final String formattedTime = event.date != null
+        ? intl.DateFormat('HH:mm').format(event.date!)
+        : 'غير محدد';
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -75,7 +88,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           backgroundColor: AppColors.primary,
           centerTitle: true,
           title: Text(
-            widget.event.title,
+            widget.event.name,
             style: GoogleFonts.almarai(
               fontWeight: FontWeight.bold,
               color: AppColors.white,
@@ -84,15 +97,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         ),
         body: ListView(
           children: [
-            Image(
-              image: AssetImage(widget.event.imageUrl),
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            _EventCoverImage(url: event.coverImage?.file),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
-                widget.event.title,
+                widget.event.name,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -128,7 +137,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Text(
-                '${widget.event.date}          الساعة:${widget.event.time}',
+                '${formattedDate}          الساعة:${formattedTime}',
                 style: TextStyle(color: AppColors.greyText, fontSize: 13),
               ),
             ),
@@ -162,7 +171,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     ),
                   ),
                   Text(
-                    '${widget.event.totalVolunteers}',
+                    '${widget.event.volunteersCount}',
                     style: GoogleFonts.almarai(
                       fontSize: 12,
                       color: Colors.green,
@@ -177,7 +186,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     ),
                   ),
                   Text(
-                    '${widget.event.joinedVolunteers}',
+                    '${widget.event.acceptedCount}',
                     style: GoogleFonts.almarai(fontSize: 12, color: Colors.red),
                   ),
                 ],
@@ -204,7 +213,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Text(
-                widget.event.place,
+                event.location ?? 'غير محدد',
                 style: TextStyle(color: AppColors.greyText, fontSize: 13),
               ),
             ),
@@ -229,7 +238,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Text(
-                '${widget.event.hours}',
+                '${formattedTime}',
                 style: TextStyle(color: AppColors.greyText, fontSize: 13),
               ),
             ),
@@ -240,20 +249,20 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               indent: 15,
               endIndent: 15,
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Center(
-                child: Text(
-                  'المشرف على الفعالية:${widget.event.leader}',
-                  style: GoogleFonts.almarai(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ),
 
+            // Padding(
+            //   padding: const EdgeInsets.all(10.0),
+            //   child: Center(
+            //     child: Text(
+            //       'المشرف على الفعالية:}',
+            //       style: GoogleFonts.almarai(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 15,
+            //         color: AppColors.primary,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
@@ -278,6 +287,36 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _EventCoverImage extends StatelessWidget {
+  final String? url;
+  const _EventCoverImage({required this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    if (url == null || url!.isEmpty) {
+      // صورة افتراضية من الأصول لو ما في URL
+      return const Image(
+        image: AssetImage('assets/images/event_image.jpg'),
+        width: 75,
+        height: 75,
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.network(
+      url!,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => const Image(
+        image: AssetImage('assets/images/event_image.jpg'),
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
+      // بإمكانك إضافة loadingBuilder إن حبيت
     );
   }
 }
