@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RankSectionWidget extends StatelessWidget {
-  final String rankName;
-  final String rankProgress;
+  final String rankName; // مثل: "المتطوع البرونزي"
+  final String rankProgress; // جاي من الـ API كسلسلة (مثال: "0.35" أو "35%")
 
   const RankSectionWidget({
     super.key,
@@ -15,16 +15,25 @@ class RankSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Map<String, double> rankProgressMap = {
-      "المتطوع البرونزي": 0.2,
-      "المتطوع الفضي": 0.4,
-      "المتطوع الذهبي": 0.6,
-      "المتطوع الماسي": 0.8,
-      "المتطوع البلاتيني": 1.0,
-    };
+    // نحاول نقرأ progress من النص ونحوّله لـ double
+    double safeProgress = 0.0;
 
-    final double progress = rankProgressMap[rankName] ?? 0.0;
-    final int percentage = (progress * 100).toInt();
+    try {
+      String cleaned = rankProgress.replaceAll("%", "").trim();
+      double value = double.tryParse(cleaned) ?? 0.0;
+
+      // إذا القيمة أكبر من 1 معناها جايه كنسبة (35 => 0.35)
+      if (value > 1) {
+        safeProgress = value / 100;
+      } else {
+        safeProgress = value;
+      }
+    } catch (_) {
+      safeProgress = 0.0;
+    }
+
+    final percentage = (safeProgress * 100).toInt();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Card(
@@ -39,7 +48,7 @@ class RankSectionWidget extends StatelessWidget {
               Row(
                 children: [
                   Image.asset(
-                    RankUtils.medalAsset(rankName),
+                    RankUtils.medalAsset(rankName), // حسب الرتبة
                     width: 37,
                     height: 37,
                     fit: BoxFit.cover,
@@ -69,7 +78,7 @@ class RankSectionWidget extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               LinearProgressIndicator(
-                value: progress,
+                value: safeProgress,
                 backgroundColor: Colors.grey.shade300,
                 color: AppColors.primary,
                 minHeight: 6,

@@ -175,12 +175,24 @@ class _EventsScreenState extends State<EventsScreen> {
                                   padding: const EdgeInsets.only(top: 6),
                                   child: Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    child: ListView.builder(
-                                      itemCount: provider.events.length,
-                                      itemBuilder: (context, index) {
-                                        final eventt = provider.events[index];
-                                        return OpportunityCard(event: eventt);
+                                    child: RefreshIndicator(
+                                      onRefresh: () async {
+                                        final token = await _storage.read(
+                                          key: 'auth_token',
+                                        );
+                                        if (token != null) {
+                                          await provider.refresh(
+                                            token: token,
+                                          ); // استدعاء refresh للبروفايدر
+                                        }
                                       },
+                                      child: ListView.builder(
+                                        itemCount: provider.events.length,
+                                        itemBuilder: (context, index) {
+                                          final eventt = provider.events[index];
+                                          return OpportunityCard(event: eventt);
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),

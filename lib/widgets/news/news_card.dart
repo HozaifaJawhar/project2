@@ -1,8 +1,8 @@
-import 'package:ammerha_volunteer/core/models/news_item.dart';
+import 'package:ammerha_volunteer/core/models/news_response.dart';
 import 'package:flutter/material.dart';
 
 class NewsCard extends StatelessWidget {
-  final NewsItem newsItem;
+  final NewsModel newsItem;
   final VoidCallback onTap;
 
   const NewsCard({super.key, required this.newsItem, required this.onTap});
@@ -29,20 +29,29 @@ class NewsCard extends StatelessWidget {
                   width: 100,
                   height: 96,
                   color: Colors.grey[300],
-                  child: Image.asset(
-                    newsItem.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[300],
-                        child: const Icon(
-                          Icons.image,
-                          color: Colors.grey,
-                          size: 32,
+                  child: newsItem.coverImage != null
+                      ? Image.network(
+                          newsItem.coverImage!.file,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.grey[300],
+                              child: const Icon(
+                                Icons.image,
+                                color: Colors.grey,
+                                size: 32,
+                              ),
+                            );
+                          },
+                        )
+                      : Container(
+                          color: Colors.grey[300],
+                          child: const Icon(
+                            Icons.image,
+                            color: Colors.grey,
+                            size: 32,
+                          ),
                         ),
-                      );
-                    },
-                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -77,7 +86,7 @@ class NewsCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          newsItem.date,
+                          newsItem.publishDate,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],

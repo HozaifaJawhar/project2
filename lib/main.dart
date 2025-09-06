@@ -5,8 +5,10 @@ import 'package:ammerha_volunteer/core/helper/api.dart';
 import 'package:ammerha_volunteer/core/provider/auth/auth_provider.dart';
 import 'package:ammerha_volunteer/core/provider/auth/registeration_provider.dart';
 import 'package:ammerha_volunteer/core/provider/events_provider.dart';
+import 'package:ammerha_volunteer/core/provider/news_provider.dart';
 import 'package:ammerha_volunteer/core/provider/volunteer_provider.dart';
 import 'package:ammerha_volunteer/core/services/events_service.dart';
+import 'package:ammerha_volunteer/core/services/news_service.dart';
 import 'package:ammerha_volunteer/core/services/volunteer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,7 @@ void main() {
   final api = Api(); // الكلاس تبعك يلي بيعمل requests
   final eventsService = EventsService(api);
   final volunteerService = VolunteerService(api);
+  final newsService = NewsService(api);
   runApp(
     MultiProvider(
       providers: [
@@ -24,9 +27,10 @@ void main() {
           create: (context) => EventsProvider(eventsService),
         ),
         ChangeNotifierProvider(
-          create: (context) =>
-              VolunteerProvider(volunteerService), // أضفنا بروفايدر البرفايل
+          create: (context) => VolunteerProvider(volunteerService),
         ),
+        // هنا نضيف بروفايدر الأخبار
+        ChangeNotifierProvider(create: (context) => NewsProvider(newsService)),
       ],
       child: MyApp(),
     ),
