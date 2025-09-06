@@ -19,26 +19,27 @@ class StatsSectionWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatCard('الفرص', opportunitiesCount.toString()),
+          _buildStatCard('الفرص', opportunitiesCount),
           const SizedBox(width: 12),
-          _buildStatCard('الساعات', hoursCount.toString()),
+          _buildStatCard('الساعات', hoursCount),
         ],
       ),
     );
   }
 
-  Widget _buildStatCard(String title, String value) {
+  Widget _buildStatCard(String title, int value) {
     return Expanded(
       child: Card(
         elevation: 0,
         color: Colors.grey.shade100,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                value,
+                value >= 0 ? value.toString() : "0",
                 style: GoogleFonts.almarai(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -49,7 +50,8 @@ class StatsSectionWidget extends StatelessWidget {
               Text(
                 title,
                 style: GoogleFonts.almarai(
-                  fontSize: 12,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.greyText,
                 ),
               ),
