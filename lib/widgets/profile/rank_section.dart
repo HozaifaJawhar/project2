@@ -15,7 +15,6 @@ class RankSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // نحاول نقرأ progress من النص ونحوّله لـ double
     double safeProgress = 0.0;
 
     try {

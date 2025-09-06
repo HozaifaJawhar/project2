@@ -82,7 +82,7 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
                             ProfileHeaderWidget(
                               name: profile.name,
                               id: profile.id,
-                              imageUrl: profile.personalImage, // تعديل الحقل
+                              imageUrl: profile.personalImage,
                             ),
                             StatsSectionWidget(
                               opportunitiesCount: profile.events.length,
