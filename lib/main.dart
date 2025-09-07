@@ -5,31 +5,39 @@ import 'package:ammerha_volunteer/core/helper/api.dart';
 import 'package:ammerha_volunteer/core/provider/auth/auth_provider.dart';
 import 'package:ammerha_volunteer/core/provider/auth/registeration_provider.dart';
 import 'package:ammerha_volunteer/core/provider/events_provider.dart';
+import 'package:ammerha_volunteer/core/provider/honor_board_provider.dart';
 import 'package:ammerha_volunteer/core/provider/news_provider.dart';
 import 'package:ammerha_volunteer/core/provider/volunteer_provider.dart';
 import 'package:ammerha_volunteer/core/services/events_service.dart';
 import 'package:ammerha_volunteer/core/services/news_service.dart';
 import 'package:ammerha_volunteer/core/services/volunteer_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  final api = Api(); // الكلاس تبعك يلي بيعمل requests
-  final eventsService = EventsService(api);
-  final volunteerService = VolunteerService(api);
-  final newsService = NewsService(api);
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final api = Api();
+  const storage = FlutterSecureStorage();
+  final token = await storage.read(key: 'auth_token');
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => RegistrationProvider()),
         ChangeNotifierProvider(
-          create: (context) => EventsProvider(eventsService),
+          create: (context) => EventsProvider(EventsService(api)),
         ),
         ChangeNotifierProvider(
-          create: (context) => VolunteerProvider(volunteerService),
+          create: (context) => VolunteerProvider(VolunteerService(api, token)),
         ),
-        ChangeNotifierProvider(create: (context) => NewsProvider(newsService)),
+        ChangeNotifierProvider(
+          create: (context) => NewsProvider(NewsService(api)),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              HonorBoardProvider(service: VolunteerService(api, token)),
+        ),
       ],
       child: MyApp(),
     ),

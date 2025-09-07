@@ -21,7 +21,7 @@ class Eventt {
   final int? volunteersCount;
   final int? acceptedCount;
   final int? pendingCount;
-  final bool isRegistered; // ✅ أضفناها للـ model
+  final bool isRegistered;
   final EventImage? coverImage;
   final EventDepartment? department;
 
@@ -37,7 +37,7 @@ class Eventt {
     this.volunteersCount,
     this.acceptedCount,
     this.pendingCount,
-    this.isRegistered = false, // ✅ قيمة افتراضية
+    this.isRegistered = false,
     this.coverImage,
     this.department,
   });
@@ -81,7 +81,7 @@ class Eventt {
       'volunteers_count': volunteersCount,
       'accepted_count': acceptedCount,
       'pending_count': pendingCount,
-      'is_registered': isRegistered, // ✅ يترجع بالـ toJson
+      'is_registered': isRegistered,
       'cover_image': coverImage?.toJson(),
       'department': department?.toJson(),
     };
@@ -99,7 +99,7 @@ class Eventt {
     int? volunteersCount,
     int? acceptedCount,
     int? pendingCount,
-    bool? isRegistered, // ✅ أضفناها للـ copyWith
+    bool? isRegistered,
     EventImage? coverImage,
     EventDepartment? department,
   }) {
@@ -115,7 +115,7 @@ class Eventt {
       volunteersCount: volunteersCount ?? this.volunteersCount,
       acceptedCount: acceptedCount ?? this.acceptedCount,
       pendingCount: pendingCount ?? this.pendingCount,
-      isRegistered: isRegistered ?? this.isRegistered, // ✅ هي
+      isRegistered: isRegistered ?? this.isRegistered,
       coverImage: coverImage ?? this.coverImage,
       department: department ?? this.department,
     );

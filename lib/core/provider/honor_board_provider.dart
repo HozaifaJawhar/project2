@@ -1,0 +1,46 @@
+import 'package:ammerha_volunteer/core/models/volunteer_api_model.dart';
+import 'package:ammerha_volunteer/core/services/volunteer_service.dart';
+import 'package:flutter/foundation.dart';
+
+class HonorItem {
+  final VolunteerApiModel user;
+  final int position; // arrangement 1..N
+  HonorItem({required this.user, required this.position});
+}
+
+class HonorBoardProvider extends ChangeNotifier {
+  final VolunteerService service;
+  HonorBoardProvider({required this.service});
+
+  List<HonorItem> _items = [];
+  bool _loading = false;
+  String? _error;
+
+  List<HonorItem> get items => _items;
+  bool get isLoading => _loading;
+  String? get error => _error;
+
+  Future<void> load() async {
+    _loading = true;
+    _error = null;
+    notifyListeners();
+    try {
+      final volunteers = await service.fetchHonorBoard();
+      // After sorting in descending order of points, we generate the order 1..N
+      _items = List.generate(
+        volunteers.length,
+        (i) => HonorItem(user: volunteers[i], position: i + 1),
+      );
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> refresh() => load();
+
+  List<HonorItem> topThree() => _items.take(3).toList();
+  List<HonorItem> others() => _items.length > 3 ? _items.sublist(3) : const [];
+}

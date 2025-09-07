@@ -21,7 +21,7 @@ class EventDetailsScreen extends StatefulWidget {
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
   bool isRegistered = false;
   _showConfirmationDialog(BuildContext context) {
-    if (isRegistered) return; // إذا مسجل مسبقاً، لا تفتح الحوار
+    if (isRegistered) return;
 
     showDialog(
       context: context,
@@ -32,14 +32,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(dialogContext).pop(); // سكّر الحوار
+                Navigator.of(dialogContext).pop();
               },
               child: const Text('لا'),
             ),
             TextButton(
               onPressed: () async {
                 final provider = context.read<EventsProvider>();
-                Navigator.of(dialogContext).pop(); // غلق الحوار فوراً
+                Navigator.of(dialogContext).pop();
 
                 const storage = FlutterSecureStorage();
                 final token = await storage.read(key: 'auth_token') ?? "";

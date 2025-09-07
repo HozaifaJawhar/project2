@@ -81,15 +81,11 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
                             const SizedBox(height: 20),
                             ProfileHeaderWidget(
                               name: profile.name,
-                              id: profile.id,
                               imageUrl: profile.personalImage,
                             ),
                             StatsSectionWidget(
                               opportunitiesCount: profile.events.length,
-                              hoursCount: profile.events.fold<int>(
-                                0,
-                                (prev, e) => prev + (e.acceptedCount ?? 0),
-                              ), // مثال
+                              hoursCount: profile.points,
                             ),
                             RankSectionWidget(
                               rankName: profile.rank,
@@ -108,7 +104,7 @@ class _VolunteerProfileScreenState extends State<VolunteerProfileScreen>
                             indicatorColor: AppColors.primary,
                             indicatorWeight: 3,
                             tabs: const [
-                              Tab(text: 'الملف الشخصي'),
+                              Tab(text: 'المهارات'),
                               Tab(text: 'الفرص المنجزة'),
                               Tab(text: 'التواصل'),
                             ],

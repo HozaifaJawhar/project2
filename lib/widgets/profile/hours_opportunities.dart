@@ -21,7 +21,7 @@ class StatsSectionWidget extends StatelessWidget {
         children: [
           _buildStatCard('الفرص', opportunitiesCount),
           const SizedBox(width: 12),
-          _buildStatCard('الساعات', hoursCount),
+          _buildStatCard('النقاط', hoursCount),
         ],
       ),
     );

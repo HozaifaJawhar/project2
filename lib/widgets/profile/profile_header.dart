@@ -4,15 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProfileHeaderWidget extends StatelessWidget {
   final String name;
-  final int id;
   final String? imageUrl;
 
-  const ProfileHeaderWidget({
-    super.key,
-    required this.name,
-    required this.id,
-    this.imageUrl,
-  });
+  const ProfileHeaderWidget({super.key, required this.name, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +47,6 @@ class ProfileHeaderWidget extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 4),
-        Text(
-          'المتطوع رقم #$id',
-          style: GoogleFonts.almarai(fontSize: 14, color: AppColors.greyText),
-        ),
       ],
     );
   }
