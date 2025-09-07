@@ -49,7 +49,7 @@ class CustomDrawer extends StatelessWidget {
                 onTap: () {},
               ),
               _buildDrawerItem(
-                icon: Icons.info_outline,
+                icon: Icons.delete_outline,
                 text: 'حذف حسابي ',
 
                 onTap: () {},

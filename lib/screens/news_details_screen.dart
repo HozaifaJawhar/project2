@@ -24,20 +24,22 @@ class NewsDetailScreen extends StatelessWidget {
                 background: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.asset(
-                      newsItem.coverImage!.file,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[300],
-                          child: const Icon(
-                            Icons.image,
-                            color: Colors.grey,
-                            size: 64,
+                    newsItem.coverImage != null
+                        ? Image.network(
+                            newsItem.coverImage!.file,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Image.asset(
+                              'assets/images/event_image.jpg',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/event_image.jpg',
+                            width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
-                        );
-                      },
-                    ),
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
