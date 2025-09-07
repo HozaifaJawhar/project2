@@ -20,9 +20,6 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int currentIndex = 0;
 
-  final String name = "ميسان";
-  final String image = "assets/images/level1(2).jpg";
-
   final List<Widget> _screens = [
     EventsScreen(),
     HonorBoardScreen(),
@@ -44,30 +41,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         return '';
     }
   }
-
-  final VolunteerProfile volunteerProfile = VolunteerProfile(
-    name: 'حذيفة ابراهيم جوهر',
-    id: '12',
-    profileImageUrl: 'assets/images/profile.png',
-    opportunitiesCount: 0,
-    hoursCount: 0,
-    rankTier: RankTier.gold,
-    rankName: 'متطوع مبتدئ',
-    rankProgress: 0.3, // Represents 30%
-    skills: ['التصوير', 'التصميم', 'التدريب', 'جمع التبرعات', 'إدارة المشاريع'],
-    completedOpportunities: [
-      CompletedOpportunity(
-        title: 'تنظيم فعالية اليوم الوطني',
-        date: '23-09-2024',
-      ),
-      CompletedOpportunity(title: 'حملة تشجير ', date: '15-10-2024'),
-    ],
-    socialLinks: {
-      'facebook': 'https://facebook.com/yourprofile',
-      'linkedin': 'https://linkedin.com/in/yourprofile',
-      'instagram': 'https://instagram.com/yourprofile',
-    },
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +66,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         ],
       ),
 
-      drawer: CustomDrawer(volunteerProfile: volunteerProfile),
+      drawer: CustomDrawer(),
 
       body: IndexedStack(index: currentIndex, children: _screens),
 

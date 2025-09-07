@@ -29,7 +29,6 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => VolunteerProvider(volunteerService),
         ),
-        // هنا نضيف بروفايدر الأخبار
         ChangeNotifierProvider(create: (context) => NewsProvider(newsService)),
       ],
       child: MyApp(),

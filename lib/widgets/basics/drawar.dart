@@ -11,9 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final VolunteerProfile volunteerProfile;
-
-  const CustomDrawer({super.key, required this.volunteerProfile});
+  const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
