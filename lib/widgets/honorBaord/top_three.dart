@@ -1,6 +1,7 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/helper/utils.dart';
 import 'package:ammerha_volunteer/core/provider/honor_board_provider.dart';
+import 'package:ammerha_volunteer/screens/volunteer_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -43,13 +44,13 @@ class TopThreePodiumWidget extends StatelessWidget {
         GestureDetector(
           onTap: () {
             // to do:............
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (_) =>
-            //         VolunteerProfileScreen2(vol: u, showEndButton: false),
-            //   ),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) =>
+                    VolunteerProfileScreen2(vol: u, showEndButton: false),
+              ),
+            );
           },
           child: Stack(
             clipBehavior: Clip.none,

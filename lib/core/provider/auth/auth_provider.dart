@@ -44,6 +44,8 @@ class AuthProvider extends ChangeNotifier {
         "عذرًا، حسابك غير مُفعّل بعد. يرجى التواصل مع إدارة المؤسسة للمساعدة.",
       )) {
         _errorMessage = "حسابك غير مفعل بعد";
+      } else if (e.toString().contains("The selected email is invalid.")) {
+        _errorMessage = "هذا الحساب غير موجود";
       } else {
         _errorMessage = "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى";
       }

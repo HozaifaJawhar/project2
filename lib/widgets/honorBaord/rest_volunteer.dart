@@ -1,6 +1,7 @@
 import 'package:ammerha_volunteer/config/theme/app_theme.dart';
 import 'package:ammerha_volunteer/core/helper/utils.dart';
 import 'package:ammerha_volunteer/core/provider/honor_board_provider.dart';
+import 'package:ammerha_volunteer/screens/volunteer_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,14 +24,13 @@ class RankListWidget extends StatelessWidget {
           child: InkWell(
             borderRadius: BorderRadius.circular(14),
             onTap: () {
-              //TO DO.......................
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (_) =>
-              //         VolunteerProfileScreen2(vol: u, showEndButton: false),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      VolunteerProfileScreen2(vol: u, showEndButton: false),
+                ),
+              );
             },
             child: Container(
               height: 80,
@@ -62,7 +62,7 @@ class RankListWidget extends StatelessWidget {
                       const SizedBox(width: 12),
                       // selfie
                       CircleAvatar(
-                        radius: 32,
+                        radius: 30,
                         backgroundColor: Colors.grey.shade200,
                         backgroundImage:
                             (u.personalImage != null &&
@@ -76,7 +76,7 @@ class RankListWidget extends StatelessWidget {
                       Text(
                         u.name,
                         style: GoogleFonts.almarai(
-                          fontSize: 16.5,
+                          fontSize: 13.5,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -94,7 +94,7 @@ class RankListWidget extends StatelessWidget {
                       // points
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
+                          horizontal: 10,
                           vertical: 7,
                         ),
                         decoration: BoxDecoration(
